@@ -1,0 +1,7 @@
+.caddy-file-editor {
+    height: 400px;
+}
+
+.caddy-file-editor.global-caddy {
+    height: 600px;
+}

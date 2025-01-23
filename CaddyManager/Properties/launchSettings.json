@@ -18,6 +18,12 @@
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
+      },
+      "Blazor": {
+        "commandName": "Executable",
+        "workingDirectory": "$(ProjectDir)",
+        "executablePath": "/Users/ebolo/.dotnet/dotnet",
+        "commandLineArgs": "watch run debug --launch-profile http"
       }
     }
   }

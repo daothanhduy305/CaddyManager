@@ -1,0 +1,10 @@
+<MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Docked" Elevation="1" Variant="@DrawerVariant.Responsive">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Caddy Manager</MudText>
+    </MudDrawerHeader>
+    <MudNavMenu>
+        <MudNavLink Match="NavLinkMatch.All" Href="/" Icon="@Icons.Custom.FileFormats.FileCode">Reverse Proxies</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/caddyfile" Icon="@Icons.Material.Filled.Language">Global Caddyfile</MudNavLink>
+        <MudNavLink Match="NavLinkMatch.All" Href="/settings" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
+    </MudNavMenu>
+</MudDrawer>

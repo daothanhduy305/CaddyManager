@@ -1,0 +1,6 @@
+@using CaddyManager.Contracts.Caddy
+@attribute [StreamRendering]
+@inject ICaddyService CaddyService
+@inject IDialogService DialogService
+
+<MudListItem Text="@FileName" Icon="@Icons.Material.Filled.InsertDriveFile" T="string" OnClick="Edit"/>

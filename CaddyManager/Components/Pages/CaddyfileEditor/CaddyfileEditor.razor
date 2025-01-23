@@ -1,0 +1,14 @@
+@attribute [StreamRendering]
+@using CaddyManager.Contracts.Caddy
+@inject ICaddyService CaddyService
+
+<MudDialog>
+    <DialogContent>
+        <StandaloneCodeEditor ConstructionOptions="@EditorConstructionOptions" CssClass="caddy-file-editor"></StandaloneCodeEditor>
+        <MudDivider/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>

@@ -1,0 +1,14 @@
+﻿@page "/"
+@attribute [StreamRendering]
+@using CaddyManager.Contracts.Caddy
+@inject ICaddyService CaddyService
+
+<PageTitle>Reverse proxy confiurations</PageTitle>
+
+<MudList T="string">
+    @foreach(var caddyConfig in _availableCaddyConfigurations)
+    {
+        <ReverseProxyItem FileName="@caddyConfig"/>
+        <MudDivider/>
+    }
+</MudList>

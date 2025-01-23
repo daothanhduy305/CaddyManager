@@ -12,6 +12,11 @@ public partial class CaddyfileEditor : ComponentBase
     [CascadingParameter]
     private IMudDialogInstance MudDialog { get; set; } = null!;
     
+    /// <summary>
+    /// Determines if the Caddy configuration file is new
+    /// </summary>
+    private bool IsNew => string.IsNullOrWhiteSpace(FileName);
+    
     [Parameter]
     public string FileName { get; set; } = string.Empty;
 
@@ -27,8 +32,9 @@ public partial class CaddyfileEditor : ComponentBase
         return new StandaloneEditorConstructionOptions
         {
             AutomaticLayout = true,
-            Language = "plaintext",
+            Language = "graphql",
             Value = _caddyConfigurationContent,
+            Theme = "vs-dark",
         };
     }
 

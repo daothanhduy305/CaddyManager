@@ -1,0 +1,6 @@
+﻿services:
+  caddymanager:
+    image: caddymanager
+    build:
+      context: .
+      dockerfile: CaddyManager/Dockerfile

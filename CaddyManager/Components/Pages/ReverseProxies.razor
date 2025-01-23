@@ -1,0 +1,24 @@
+﻿@page "/"
+@using CaddyManager.Contracts.Caddy
+@inject ICaddyService CaddyService
+
+<PageTitle>Home</PageTitle>
+
+<MudList T="string">
+    @foreach(var caddyConfig in _availableCaddyConfigurations)
+    {
+        <MudListItem Text="@caddyConfig" Icon="@Icons.Material.Filled.InsertDriveFile"/>
+        <MudDivider/>
+    }
+</MudList>
+
+@code
+{
+    List<string> _availableCaddyConfigurations = [];
+    
+    protected override Task OnInitializedAsync()
+    {
+        _availableCaddyConfigurations = CaddyService.GetExistingCaddyConfigurations();
+        return base.OnInitializedAsync();
+    }
+}

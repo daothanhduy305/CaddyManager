@@ -5,8 +5,15 @@
 
 <PageTitle>Reverse proxy confiurations</PageTitle>
 
-<MudList T="string">
-    @foreach(var caddyConfig in _availableCaddyConfigurations)
+<MudContainer Class="d-flex flex-row flex-grow-1 gap-4">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add">New...</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete"
+               Disabled="@(_selectedCaddyConfigurations.Count <= 0)">Delete
+    </MudButton>
+</MudContainer>
+<MudList T="string" Style="padding-top: 16px;" SelectionMode="SelectionMode.MultiSelection"
+         @bind-SelectedValues="_selectedCaddyConfigurations">
+    @foreach (var caddyConfig in _availableCaddyConfigurations)
     {
         <ReverseProxyItem FileName="@caddyConfig"/>
         <MudDivider/>

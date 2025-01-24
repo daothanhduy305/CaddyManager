@@ -5,7 +5,7 @@
         <MudTextField @bind-Value="FileName" Label="File name" Variant="Variant.Outlined"
                       Style="margin-bottom: 8px;"
                       ShrinkLabel="true"
-                      Disabled="@(!IsNew)"></MudTextField>
+                      ReadOnly="@(!IsNew)"></MudTextField>
         <MudText Typo="Typo.caption" Style="padding-left: 18px; padding-bottom: 8px;">File content</MudText>
         <StandaloneCodeEditor @ref="_codeEditor"
                               ConstructionOptions="@EditorConstructionOptions"

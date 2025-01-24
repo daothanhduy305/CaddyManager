@@ -4,13 +4,11 @@
 
 <MudDialog>
     <DialogContent>
-        @if (IsNew)
-        {
-            <MudTextField @bind-Value="FileName" Label="File name" Variant="Variant.Outlined"
-                          Style="margin-bottom: 16px;"
-                          ShrinkLabel="true"></MudTextField>
-        }
-        <MudText Typo="Typo.caption" Style="padding-left: 8px; padding-bottom: 4px;">File content</MudText>
+        <MudTextField @bind-Value="FileName" Label="File name" Variant="Variant.Outlined"
+                      Style="margin-bottom: 8px;"
+                      ShrinkLabel="true"
+                      Disabled="@(!IsNew)"></MudTextField>
+        <MudText Typo="Typo.caption" Style="padding-left: 18px; padding-bottom: 8px;">File content</MudText>
         <StandaloneCodeEditor ConstructionOptions="@EditorConstructionOptions"
                               CssClass="caddy-file-editor"></StandaloneCodeEditor>
     </DialogContent>

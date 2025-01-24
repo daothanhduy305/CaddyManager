@@ -13,7 +13,7 @@ public partial class ReverseProxyItem : ComponentBase
 
     private Task Edit()
     {
-        return DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>(FileName, options: new DialogOptions
+        return DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>("Caddy file", options: new DialogOptions
         {
             FullWidth = true,
             MaxWidth = MaxWidth.Medium,

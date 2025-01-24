@@ -15,15 +15,21 @@ public partial class CaddyfileEditor : ComponentBase
     /// <summary>
     /// Determines if the Caddy configuration file is new
     /// </summary>
-    private bool IsNew => string.IsNullOrWhiteSpace(FileName);
+    private bool IsNew { get; set; }
     
     [Parameter]
     public string FileName { get; set; } = string.Empty;
 
     protected override Task OnInitializedAsync()
     {
-        // Load the content of the Caddy configuration file
-        _caddyConfigurationContent = CaddyService.GetCaddyConfigurationContent(FileName);
+        IsNew = string.IsNullOrWhiteSpace(FileName);
+        
+        if (!IsNew)
+        {
+            // Load the content of the Caddy configuration file
+            _caddyConfigurationContent = CaddyService.GetCaddyConfigurationContent(FileName);
+        }
+        
         return base.OnInitializedAsync();
     }
     

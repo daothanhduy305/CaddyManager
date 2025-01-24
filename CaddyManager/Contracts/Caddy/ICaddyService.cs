@@ -1,3 +1,5 @@
+using CaddyManager.Models.Caddy;
+
 namespace CaddyManager.Contracts.Caddy;
 
 /// <summary>
@@ -24,4 +26,18 @@ public interface ICaddyService
     /// </summary>
     /// <returns></returns>
     string GetCaddyGlobalConfigurationContent();
+    
+    /// <summary>
+    /// Method to help save a Caddy configuration file
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    CaddyOperationResponse SaveCaddyConfiguration(CaddySaveConfigurationRequest request);
+    
+    /// <summary>
+    /// Method to help save the global Caddyfile configuration
+    /// </summary>
+    /// <param name="content"></param>
+    /// <returns></returns>
+    CaddyOperationResponse SaveCaddyGlobalConfiguration(string content);
 }

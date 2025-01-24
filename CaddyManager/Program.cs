@@ -15,6 +15,15 @@ builder.Services.RegisterAssemblyPublicNonGenericClasses()
     .Where(t => t.Name.EndsWith("Service") || t.Name.EndsWith("Repository"))
     .AsPublicImplementedInterfaces();
 
+builder.Services.AddSignalR(e => { e.MaximumReceiveMessageSize = 102400000; });
+
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.VisibleStateDuration = 4000;
+    config.SnackbarConfiguration.HideTransitionDuration = 100;
+    config.SnackbarConfiguration.ShowTransitionDuration = 100;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

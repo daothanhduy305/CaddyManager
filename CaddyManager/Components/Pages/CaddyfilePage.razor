@@ -1,7 +1,5 @@
 ﻿@page "/caddyfile"
 @attribute [StreamRendering]
-@using CaddyManager.Contracts.Caddy
-@inject ICaddyService CaddyService
 
 <PageTitle>Global Caddyfile</PageTitle>
 
@@ -12,7 +10,9 @@
         </MudText>
     </MudCardHeader>
     <MudCardContent>
-        <StandaloneCodeEditor ConstructionOptions="@EditorConstructionOptions" CssClass="caddy-file-editor global-caddy"></StandaloneCodeEditor>
+        <MudText Typo="Typo.caption" Style="padding-left: 18px; padding-bottom: 8px;">File content</MudText>
+        <StandaloneCodeEditor @ref="_codeEditor" ConstructionOptions="@EditorConstructionOptions"
+                              CssClass="caddy-file-editor global-caddy"></StandaloneCodeEditor>
         <MudDivider/>
     </MudCardContent>
     <MudCardActions>

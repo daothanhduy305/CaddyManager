@@ -1,3 +1,4 @@
+using CaddyManager.Contracts.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -10,6 +11,12 @@ public partial class ReverseProxyItem : ComponentBase
     /// </summary>
     [Parameter]
     public string FileName { get; set; } = string.Empty;
+    
+    [Inject]
+    private IDialogService DialogService { get; set; } = null!;
+    
+    [Inject]
+    private ICaddyService CaddyService { get; set; } = null!;
 
     private Task Edit()
     {

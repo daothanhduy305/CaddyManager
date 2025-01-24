@@ -1,3 +1,4 @@
+using CaddyManager.Contracts.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -7,20 +8,28 @@ public partial class ReverseProxiesPage : ComponentBase
 {
     private List<string> _availableCaddyConfigurations = [];
     private IReadOnlyCollection<string> _selectedCaddyConfigurations = [];
+    
+    [Inject]
+    private ICaddyService CaddyService { get; set; } = null!;
+    
+    [Inject]
+    private IDialogService DialogService { get; set; } = null!;
 
-    protected override Task OnInitializedAsync()
+    protected override void OnAfterRender(bool firstRender)
     {
-        _availableCaddyConfigurations = CaddyService.GetExistingCaddyConfigurations();
-        return base.OnInitializedAsync();
+        if (firstRender)
+        {
+            Refresh();
+        }
     }
 
     /// <summary>
     /// Method to help open the dialog to create a new reverse proxy configuration
     /// </summary>
     /// <returns></returns>
-    private Task NewReverseProxy()
+    private async Task NewReverseProxy()
     {
-        return DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>("New configuration",
+        var dialog = await DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>("New configuration",
             options: new DialogOptions
             {
                 FullWidth = true,
@@ -29,5 +38,21 @@ public partial class ReverseProxiesPage : ComponentBase
             {
                 { "FileName", string.Empty }
             });
+        
+        var result = await dialog.Result;
+        
+        if (result is { Data: bool, Canceled: false } && (bool)result.Data)
+        {
+            Refresh();
+        }
+    }
+    
+    /// <summary>
+    /// Get the latest information from the server
+    /// </summary>
+    private void Refresh()
+    {
+        _availableCaddyConfigurations = CaddyService.GetExistingCaddyConfigurations();
+        StateHasChanged();
     }
 }

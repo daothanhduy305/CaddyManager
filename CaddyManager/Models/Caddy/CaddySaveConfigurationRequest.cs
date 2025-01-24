@@ -8,7 +8,7 @@ public class CaddySaveConfigurationRequest
     /// <summary>
     /// Indicates if the configuration is new
     /// </summary>
-    public bool IsNew { get; set; } = false;
+    public bool IsNew { get; set; }
     
     /// <summary>
     /// Name of the Caddy configuration file

@@ -8,7 +8,8 @@
                OnClick="NewReverseProxy">New...
     </MudButton>
     <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Delete"
-               Disabled="@(_selectedCaddyConfigurations.Count <= 0)">Delete
+               Disabled="@(_selectedCaddyConfigurations.Count <= 0)"
+               OnClick="Delete">Delete
     </MudButton>
 </MudContainer>
 <MudList T="string" Style="padding-top: 16px;" SelectionMode="SelectionMode.MultiSelection"

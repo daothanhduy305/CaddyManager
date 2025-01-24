@@ -21,6 +21,7 @@ public class CaddyService(IConfigurationsService configurationsService) : ICaddy
         return Directory.GetFiles(Configurations.ConfigDir)
             .Where(filePath => Path.GetFileName(filePath) != CaddyGlobalConfigName)
             .Select(Path.GetFileNameWithoutExtension)
+            .Order()
             .ToList()!;
     }
 
@@ -92,4 +93,41 @@ public class CaddyService(IConfigurationsService configurationsService) : ICaddy
             FileName = CaddyGlobalConfigName,
             Content = content
         });
+
+    /// <inheritdoc />
+    public CaddyDeleteOperationResponse DeleteCaddyConfigurations(List<string> configurationNames)
+    {
+        var failed = new List<string>();
+        
+        foreach (var configurationName in configurationNames)
+        {
+            var filePath = Path.Combine(Configurations.ConfigDir,
+                configurationName == CaddyGlobalConfigName ? CaddyGlobalConfigName : $"{configurationName}.caddy");
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    File.Delete(filePath);
+                }
+                catch
+                {
+                    failed.Add(configurationName);
+                }
+            }
+            else
+            {
+                failed.Add(configurationName);
+            }
+        }
+        
+        return new CaddyDeleteOperationResponse
+        {
+            Success = failed.Count == 0,
+            Message = failed.Count == 0
+                ? "Configuration(s) deleted successfully"
+                : $"Failed to delete the following configuration(s): {string.Join(", ", failed)}",
+            DeletedConfigurations = configurationNames.Except(failed).ToList()
+        };
+    }
 }

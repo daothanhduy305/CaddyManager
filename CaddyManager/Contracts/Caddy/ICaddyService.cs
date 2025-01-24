@@ -40,4 +40,11 @@ public interface ICaddyService
     /// <param name="content"></param>
     /// <returns></returns>
     CaddyOperationResponse SaveCaddyGlobalConfiguration(string content);
+
+    /// <summary>
+    /// Method to delete the given Caddy configurations by name
+    /// </summary>
+    /// <param name="configurationNames"></param>
+    /// <returns></returns>
+    CaddyDeleteOperationResponse DeleteCaddyConfigurations(List<string> configurationNames);
 }

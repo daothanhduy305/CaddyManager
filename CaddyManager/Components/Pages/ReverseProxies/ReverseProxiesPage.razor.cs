@@ -14,6 +14,9 @@ public partial class ReverseProxiesPage : ComponentBase
     
     [Inject]
     private IDialogService DialogService { get; set; } = null!;
+    
+    [Inject]
+    private ISnackbar Snackbar { get; set; } = null!;
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -54,5 +57,22 @@ public partial class ReverseProxiesPage : ComponentBase
     {
         _availableCaddyConfigurations = CaddyService.GetExistingCaddyConfigurations();
         StateHasChanged();
+    }
+    
+    private void Delete()
+    {
+        var response = CaddyService.DeleteCaddyConfigurations(_selectedCaddyConfigurations.ToList());
+        
+        _selectedCaddyConfigurations = _selectedCaddyConfigurations.Except(response.DeletedConfigurations).ToList();
+        
+        if (response.Success)
+        {
+            Snackbar.Add("Configuration(s) deleted successfully", Severity.Success);
+            Refresh();
+        }
+        else
+        {
+            Snackbar.Add(response.Message, Severity.Error);
+        }
     }
 }

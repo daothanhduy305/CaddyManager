@@ -1,4 +1,5 @@
 using CaddyManager.Configurations.Caddy;
+using CaddyManager.Configurations.Docker;
 
 namespace CaddyManager.Contracts.Configurations;
 
@@ -11,4 +12,9 @@ public interface IConfigurationsService
     /// Configurations for Caddy service
     /// </summary>
     CaddyServiceConfigurations CaddyServiceConfigurations { get; }
+    
+    /// <summary>
+    /// Configurations for Docker service
+    /// </summary>
+    DockerServiceConfiguration DockerServiceConfiguration { get; }
 }

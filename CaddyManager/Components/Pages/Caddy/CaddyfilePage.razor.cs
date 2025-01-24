@@ -3,7 +3,7 @@ using CaddyManager.Contracts.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace CaddyManager.Components.Pages;
+namespace CaddyManager.Components.Pages.Caddy;
 
 public partial class CaddyfilePage : ComponentBase
 {
@@ -28,6 +28,7 @@ public partial class CaddyfilePage : ComponentBase
             AutomaticLayout = true,
             Language = "plaintext",
             Value = _caddyConfigurationContent,
+            Theme = "vs-dark",
         };
     }
 
@@ -47,6 +48,6 @@ public partial class CaddyfilePage : ComponentBase
 
     private void Cancel()
     {
-        // CaddyService.GetCaddyGlobalConfigurationContent();
+        _codeEditor.SetValue(_caddyConfigurationContent);
     }
 }

@@ -2,7 +2,7 @@ using CaddyManager.Contracts.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace CaddyManager.Components.Pages.ReverseProxies;
+namespace CaddyManager.Components.Pages.Caddy.ReverseProxies;
 
 public partial class ReverseProxyItem : ComponentBase
 {

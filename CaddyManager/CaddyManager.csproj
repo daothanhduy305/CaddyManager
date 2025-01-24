@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>13</LangVersion>
+        <ContainerRepository>ebolo/caddy-manager</ContainerRepository>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,7 +23,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories\" />
+      <AdditionalFiles Include="Components\Pages\Caddy\CaddyfileEditor\CaddyfileEditor.razor" />
+      <AdditionalFiles Include="Components\Pages\Caddy\ReverseProxies\ReverseProxiesPage.razor" />
+      <AdditionalFiles Include="Components\Pages\Caddy\ReverseProxies\ReverseProxyItem.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Components\Pages\ReverseProxies\ReverseProxiesPage.razor" />
+      <_ContentIncludedByDefault Remove="Components\Pages\ReverseProxies\ReverseProxyItem.razor" />
     </ItemGroup>
 
 </Project>

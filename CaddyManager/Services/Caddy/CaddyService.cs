@@ -3,7 +3,7 @@ using CaddyManager.Contracts.Caddy;
 using CaddyManager.Contracts.Configurations;
 using CaddyManager.Models.Caddy;
 
-namespace CaddyManager.Services;
+namespace CaddyManager.Services.Caddy;
 
 /// <inheritdoc />
 public class CaddyService(IConfigurationsService configurationsService) : ICaddyService

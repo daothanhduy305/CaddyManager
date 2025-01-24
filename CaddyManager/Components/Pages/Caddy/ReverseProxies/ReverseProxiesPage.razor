@@ -3,7 +3,7 @@
 
 <PageTitle>Reverse proxy configurations</PageTitle>
 
-<MudContainer Class="d-flex flex-row flex-grow-1 gap-4">
+<MudContainer Class="d-flex flex-row flex-grow-1 gap-4 align-center">
     <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
                OnClick="NewReverseProxy">New...
     </MudButton>
@@ -11,6 +11,13 @@
                Disabled="@(_selectedCaddyConfigurations.Count <= 0)"
                OnClick="Delete">Delete
     </MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Default" StartIcon="@Icons.Material.Filled.Refresh"
+               OnClick="RestartCaddy">Restart Caddy
+    </MudButton>
+    @if (_isProcessing)
+    {
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+    }
 </MudContainer>
 <MudList T="string" Style="padding-top: 16px;" SelectionMode="SelectionMode.MultiSelection"
          @bind-SelectedValues="_selectedCaddyConfigurations">

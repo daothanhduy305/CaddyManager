@@ -12,7 +12,7 @@ builder.Services
 
 // Auto register all the Services, Repositories that we have had within the code base
 builder.Services.RegisterAssemblyPublicNonGenericClasses()
-    .Where(t => t.Name.EndsWith("Service") || t.Name.EndsWith("Repository"))
+    .Where(t => t.Name.EndsWith("Service"))
     .AsPublicImplementedInterfaces();
 
 builder.Services.AddSignalR(e => { e.MaximumReceiveMessageSize = 102400000; });

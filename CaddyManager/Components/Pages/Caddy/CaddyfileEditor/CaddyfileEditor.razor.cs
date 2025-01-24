@@ -4,7 +4,7 @@ using CaddyManager.Models.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace CaddyManager.Components.Pages.CaddyfileEditor;
+namespace CaddyManager.Components.Pages.Caddy.CaddyfileEditor;
 
 public partial class CaddyfileEditor : ComponentBase
 {

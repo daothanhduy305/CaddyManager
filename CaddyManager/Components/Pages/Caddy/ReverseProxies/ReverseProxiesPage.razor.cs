@@ -1,16 +1,21 @@
 using CaddyManager.Contracts.Caddy;
+using CaddyManager.Contracts.Docker;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace CaddyManager.Components.Pages.ReverseProxies;
+namespace CaddyManager.Components.Pages.Caddy.ReverseProxies;
 
 public partial class ReverseProxiesPage : ComponentBase
 {
+    private bool _isProcessing;
     private List<string> _availableCaddyConfigurations = [];
     private IReadOnlyCollection<string> _selectedCaddyConfigurations = [];
     
     [Inject]
     private ICaddyService CaddyService { get; set; } = null!;
+    
+    [Inject]
+    private IDockerService DockerService { get; set; } = null!;
     
     [Inject]
     private IDialogService DialogService { get; set; } = null!;
@@ -59,6 +64,9 @@ public partial class ReverseProxiesPage : ComponentBase
         StateHasChanged();
     }
     
+    /// <summary>
+    /// Have the selected configurations be deleted
+    /// </summary>
     private void Delete()
     {
         var response = CaddyService.DeleteCaddyConfigurations(_selectedCaddyConfigurations.ToList());
@@ -73,6 +81,28 @@ public partial class ReverseProxiesPage : ComponentBase
         else
         {
             Snackbar.Add(response.Message, Severity.Error);
+        }
+    }
+    
+    /// <summary>
+    /// Restart the Caddy container
+    /// </summary>
+    /// <returns></returns>
+    private async Task RestartCaddy()
+    {
+        try
+        {
+            _isProcessing = true;
+            StateHasChanged();
+            Snackbar.Add("Restarting Caddy container", Severity.Info);
+            await DockerService.RestartCaddyContainerAsync();
+            Snackbar.Add("Caddy container restarted successfully", Severity.Success);
+            _isProcessing = false;
+            StateHasChanged();
+        }
+        catch
+        {
+            Snackbar.Add("Failed to restart the Caddy container", Severity.Error);
         }
     }
 }

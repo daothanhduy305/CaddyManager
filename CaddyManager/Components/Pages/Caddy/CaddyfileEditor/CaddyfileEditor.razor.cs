@@ -45,6 +45,11 @@ public partial class CaddyfileEditor : ComponentBase
             Language = "graphql",
             Value = _caddyConfigurationContent,
             Theme = "vs-dark",
+            Padding = new EditorPaddingOptions
+            {
+                Top = 8f,
+                Bottom = 8f,
+            }
         };
     }
 

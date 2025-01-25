@@ -26,9 +26,14 @@ public partial class CaddyfilePage : ComponentBase
         return new StandaloneEditorConstructionOptions
         {
             AutomaticLayout = true,
-            Language = "plaintext",
+            Language = "graphql",
             Value = _caddyConfigurationContent,
             Theme = "vs-dark",
+            Padding = new EditorPaddingOptions
+            {
+                Top = 8f,
+                Bottom = 8f,
+            }
         };
     }
 

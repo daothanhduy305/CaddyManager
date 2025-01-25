@@ -98,7 +98,7 @@ public class CaddyService(IConfigurationsService configurationsService) : ICaddy
     public CaddyDeleteOperationResponse DeleteCaddyConfigurations(List<string> configurationNames)
     {
         var failed = new List<string>();
-        
+
         foreach (var configurationName in configurationNames)
         {
             var filePath = Path.Combine(Configurations.ConfigDir,
@@ -120,7 +120,7 @@ public class CaddyService(IConfigurationsService configurationsService) : ICaddy
                 failed.Add(configurationName);
             }
         }
-        
+
         return new CaddyDeleteOperationResponse
         {
             Success = failed.Count == 0,

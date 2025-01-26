@@ -7,6 +7,8 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <LangVersion>13</LangVersion>
         <ContainerRepository>ebolo/caddy-manager</ContainerRepository>
+        <!-- To avoid error on lock file not found -->
+        <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     </PropertyGroup>
 
     <ItemGroup>

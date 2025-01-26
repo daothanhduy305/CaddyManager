@@ -38,4 +38,5 @@ jobs:
         run: |
           dotnet publish \
           --configuration Release --os linux --arch x64 \
-          /t:PublishContainer -p ContainerRegistry=${{ vars.DOCKER_GITEA_DOMAIN }}
+          /t:PublishContainer -p ContainerRegistry=${{ vars.DOCKER_GITEA_DOMAIN }} \
+          -p ContainerRepository=ebolo/caddy-manager

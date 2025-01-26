@@ -131,7 +131,7 @@ This repository can be cloned and then built with DotNet. Using the `dotnet publ
    git clone https://pikachu-gitea.duydao.org/ebolo/CaddyManager.git
    cd CaddyManager
    ```
-2. Login to the container registry
+2. Login to the container registry (optional, only need to publish to a remote registry)
    ```shell
    docker login -u $USER_NAME $REGISTRY_URL
    ```
@@ -139,12 +139,16 @@ This repository can be cloned and then built with DotNet. Using the `dotnet publ
    ```shell
    dotnet publish --os linux --arch x64 /t:PublishContainer -p ContainerRegistry=$REGISTRY_URL
    ```
+   if publishing to only the local machine, the `ContainerRegistry` parameter can be omitted.
+   ```shell
+   dotnet publish --os linux --arch x64 /t:PublishContainer
+   ```
 
 Then the container can be run with Docker compose:
 ```yaml
 services:
   caddy:
-    image: $REGISTRY_URL/ebolo/caddy-manager:latest
+    image: caddy-manager:latest
     container_name: caddy-manager
     restart: always
     environment:
@@ -162,8 +166,8 @@ services:
 
 Example of `.env` file. The `UID` and `GID` are the user and group ID of the host user having the permission to write to the Caddy configuration directory:
 ```shell
-UID=1000
-GID=1000
+UID=1000 # can be 0 as root user
+GID=1000 # can be 0 as root group
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

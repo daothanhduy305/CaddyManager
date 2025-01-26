@@ -1,0 +1,37 @@
+name: Caddy Manager CI build
+run-name: ${{ gitea.actor }} is running CI pipeline
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    env:
+      RUNNER_TOOL_CACHE: /toolcache
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Login to Gitea
+        uses: docker/login-action@v3
+        with:
+          registry: http://${{ vars.DOCKER_GITEA_DOMAIN }}
+          username: ${{ vars.DOCKER_GITEA_USERNAME }}
+          password: ${{ secrets.DOCKER_GITEA_PAT }}
+          config-inline: |
+            [registry."${{ vars.DOCKER_GITEA_DOMAIN }}"]
+              http = true
+              insecure = true            
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9' # SDK Version to use.
+          dotnet-quality: 'ga'
+          cache: true
+      - run: dotnet restore --locked-mode
+      - run: dotnet build --configuration Release --no-restore
+      - name: Build and push Docker image
+        run: |
+          dotnet publish \
+          --configuration Release --os linux --arch x64 \
+          /t:PublishContainer -p ContainerRegistry=${{ vars.DOCKER_GITEA_DOMAIN }}

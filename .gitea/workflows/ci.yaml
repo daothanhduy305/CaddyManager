@@ -37,5 +37,5 @@ jobs:
       - name: Publish container
         run: |
           dotnet publish \
-          --configuration Release --os linux --arch x64 \
+          --no-restore --configuration Release --os linux --arch x64 \
           /t:PublishContainer -p ContainerRegistry=${{ vars.DOCKER_GITEA_DOMAIN }}

@@ -23,7 +23,7 @@
          @bind-SelectedValues="_selectedCaddyConfigurations">
     @foreach (var caddyConfig in _availableCaddyConfigurations)
     {
-        <ReverseProxyItem FileName="@caddyConfig"/>
+        <CaddyReverseProxyItem FileName="@caddyConfig"/>
         <MudDivider/>
     }
 </MudList>

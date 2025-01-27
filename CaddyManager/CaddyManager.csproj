@@ -27,8 +27,9 @@
 
     <ItemGroup>
       <AdditionalFiles Include="Components\Pages\Caddy\CaddyfileEditor\CaddyfileEditor.razor" />
-      <AdditionalFiles Include="Components\Pages\Caddy\ReverseProxies\ReverseProxiesPage.razor" />
-      <AdditionalFiles Include="Components\Pages\Caddy\ReverseProxies\ReverseProxyItem.razor" />
+      <AdditionalFiles Include="Components\Pages\Caddy\CaddyReverseProxies\ReverseProxiesPage.razor" />
+      <AdditionalFiles Include="Components\Pages\Caddy\CaddyReverseProxies\ReverseProxyItem.razor" />
+      <AdditionalFiles Include="Components\Pages\Generic\Error.razor" />
     </ItemGroup>
 
     <ItemGroup>

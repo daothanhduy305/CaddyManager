@@ -1,27 +1,25 @@
+using System.Globalization;
+using CaddyManager.Components.Pages.Generic;
 using CaddyManager.Contracts.Caddy;
 using CaddyManager.Contracts.Docker;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace CaddyManager.Components.Pages.Caddy.ReverseProxies;
+namespace CaddyManager.Components.Pages.Caddy.CaddyReverseProxies;
 
-public partial class ReverseProxiesPage : ComponentBase
+public partial class CaddyReverseProxiesPage : ComponentBase
 {
     private bool _isProcessing;
     private List<string> _availableCaddyConfigurations = [];
     private IReadOnlyCollection<string> _selectedCaddyConfigurations = [];
-    
-    [Inject]
-    private ICaddyService CaddyService { get; set; } = null!;
-    
-    [Inject]
-    private IDockerService DockerService { get; set; } = null!;
-    
-    [Inject]
-    private IDialogService DialogService { get; set; } = null!;
-    
-    [Inject]
-    private ISnackbar Snackbar { get; set; } = null!;
+
+    [Inject] private ICaddyService CaddyService { get; set; } = null!;
+
+    [Inject] private IDockerService DockerService { get; set; } = null!;
+
+    [Inject] private IDialogService DialogService { get; set; } = null!;
+
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -46,15 +44,15 @@ public partial class ReverseProxiesPage : ComponentBase
             {
                 { "FileName", string.Empty }
             });
-        
+
         var result = await dialog.Result;
-        
+
         if (result is { Data: bool, Canceled: false } && (bool)result.Data)
         {
             Refresh();
         }
     }
-    
+
     /// <summary>
     /// Get the latest information from the server
     /// </summary>
@@ -63,27 +61,51 @@ public partial class ReverseProxiesPage : ComponentBase
         _availableCaddyConfigurations = CaddyService.GetExistingCaddyConfigurations();
         StateHasChanged();
     }
-    
+
     /// <summary>
     /// Have the selected configurations be deleted
     /// </summary>
-    private void Delete()
+    private Task Delete()
     {
-        var response = CaddyService.DeleteCaddyConfigurations(_selectedCaddyConfigurations.ToList());
-        
-        _selectedCaddyConfigurations = _selectedCaddyConfigurations.Except(response.DeletedConfigurations).ToList();
-        
-        if (response.Success)
+        var confWord = _selectedCaddyConfigurations.Count > 1 ? "configurations" : "configuration";
+
+        return DialogService.ShowAsync<ConfirmationDialog>($"Delete {confWord}", options: new DialogOptions
         {
-            Snackbar.Add("Configuration(s) deleted successfully", Severity.Success);
-            Refresh();
-        }
-        else
+            FullWidth = true,
+            MaxWidth = MaxWidth.ExtraSmall,
+        }, parameters: new DialogParameters
         {
-            Snackbar.Add(response.Message, Severity.Error);
-        }
+            {
+                "Message",
+                $"Are you sure you want to delete the selected {confWord}?"
+            },
+            {
+                "OnConfirm", EventCallback.Factory.Create(this, () =>
+                {
+                    var response = CaddyService.DeleteCaddyConfigurations(_selectedCaddyConfigurations.ToList());
+
+                    _selectedCaddyConfigurations =
+                        _selectedCaddyConfigurations.Except(response.DeletedConfigurations).ToList();
+
+                    if (response.Success)
+                    {
+                        Snackbar.Add(
+                            $"{CultureInfo.InvariantCulture.TextInfo.ToTitleCase(confWord)} deleted successfully",
+                            Severity.Success);
+                        Refresh();
+                    }
+                    else
+                    {
+                        Snackbar.Add(response.Message, Severity.Error);
+                    }
+                })
+            },
+            { "ConfirmText", "Yes" },
+            { "ConfirmColor", Color.Error },
+            { "CancelText", "No" }
+        });
     }
-    
+
     /// <summary>
     /// Restart the Caddy container
     /// </summary>

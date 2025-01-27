@@ -2,9 +2,9 @@ using CaddyManager.Contracts.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace CaddyManager.Components.Pages.Caddy.ReverseProxies;
+namespace CaddyManager.Components.Pages.Caddy.CaddyReverseProxies;
 
-public partial class ReverseProxyItem : ComponentBase
+public partial class CaddyReverseProxyItem : ComponentBase
 {
     /// <summary>
     /// File path of the Caddy configuration file

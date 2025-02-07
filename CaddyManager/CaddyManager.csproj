@@ -32,9 +32,4 @@
       <AdditionalFiles Include="Components\Pages\Generic\Error.razor" />
     </ItemGroup>
 
-    <ItemGroup>
-      <_ContentIncludedByDefault Remove="Components\Pages\ReverseProxies\ReverseProxiesPage.razor" />
-      <_ContentIncludedByDefault Remove="Components\Pages\ReverseProxies\ReverseProxyItem.razor" />
-    </ItemGroup>
-
 </Project>

@@ -1,6 +1,8 @@
 ﻿services:
-  caddymanager:
-    image: caddymanager
-    build:
-      context: .
-      dockerfile: CaddyManager/Dockerfile
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    restart: always
+    network_mode: "host"
+    security_opt:
+      - label:disable

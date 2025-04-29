@@ -1,0 +1,48 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
+{
+  "name": "C# (.NET)",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/dotnet:1-9.0",
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    8080
+  ],
+  "mounts": [
+    {
+      "source": "caddy-manager-data-protection",
+      "type": "volume",
+      "target": "/home/vscode/.aspnet/DataProtection-Keys"
+    },
+    {
+      "source": "caddy-manager-configdir",
+      "type": "volume",
+      "target": "/home/vscode/caddy/config"
+    }
+  ],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "dotnet restore",
+  "postCreateCommand": {
+    "fixDataProtectionPerms": "sudo chown -R $(whoami): /home/vscode/.aspnet/DataProtection-Keys",
+    "fixCaddyConfigPerms": "sudo chown -R $(whoami): /home/vscode/caddy/config"
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    "jetbrains": {
+      "backend": "Rider"
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+  "containerEnv": {
+    "Docker__CaddyContainerName": "caddy",
+    "Docker__DockerHost": "unix:///var/run/docker.sock",
+    "Caddy__ConfigDir": "/home/vscode/caddy/config",
+  }
+}

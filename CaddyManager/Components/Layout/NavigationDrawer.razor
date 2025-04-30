@@ -1,11 +1,16 @@
 <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="@DrawerVariant.Mini"
-           OverlayAutoClose="true">
+    OverlayAutoClose="true">
     <MudNavMenu>
-        <MudNavLink Match="NavLinkMatch.All" Href="/" Icon="@Icons.Custom.FileFormats.FileCode">
-            Reverse Proxies
-        </MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All" Href="/caddyfile" Icon="@Icons.Material.Filled.Language">
-            Global Caddyfile
-        </MudNavLink>
+        @foreach (var item in _drawerItems)
+        {
+            <div>
+                <MudTooltip Text="@(_drawerOpen ? string.Empty : item.Text)" Placement="Placement.Right"
+                    RootClass="drawer-item-tooltip">
+                    <MudNavLink Href="@item.Url" Icon="@item.Icon" Match="NavLinkMatch.All">
+                        @item.Text
+                    </MudNavLink>
+                </MudTooltip>   
+            </div>
+        }
     </MudNavMenu>
 </MudDrawer>

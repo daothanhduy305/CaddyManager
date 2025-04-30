@@ -12,3 +12,8 @@
     overflow: hidden;
     border-radius: inherit;
 }
+
+/*This is for having the active drawer item's icon color same as the text*/
+.mud-nav-link.active svg {
+    color: var(--mud-palette-primary)!important;
+}

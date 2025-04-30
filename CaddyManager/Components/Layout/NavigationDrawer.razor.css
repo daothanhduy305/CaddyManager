@@ -1,0 +1,9 @@
+::deep .drawer-item-tooltip {
+    width: 100%;
+}
+
+::deep .mud-nav-link-text {
+    /* This is to enforce showing only 1 line for the drawer item text */
+    height: 14px;
+    overflow: hidden;
+}

@@ -1,16 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
 @* Required *@
-<MudThemeProvider />
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
 <MudPopoverProvider />
-
 @* Needed for dialogs *@
 <MudDialogProvider />
-
 @* Needed for snackbars *@
 <MudSnackbarProvider />
-
-<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
+<CustomCssStyle/>
 
 @if (!_isInitialing)
 {

@@ -2,10 +2,12 @@
 
 <MudDialog ActionsClass="pb-4 pr-6">
     <DialogContent>
-        <MudTextField @bind-Value="FileName" Label="File name" Variant="Variant.Outlined"
+        <MudFocusTrap>
+            <MudTextField @bind-Value="FileName" Label="File name" Variant="Variant.Outlined"
                       Style="margin-bottom: 8px;"
                       ShrinkLabel="true"
                       ReadOnly="@(!IsNew)"></MudTextField>
+        </MudFocusTrap>
         <MudText Typo="Typo.caption" class="pl-4">File content</MudText>
         <StandaloneCodeEditor @ref="_codeEditor"
                               ConstructionOptions="@EditorConstructionOptions"

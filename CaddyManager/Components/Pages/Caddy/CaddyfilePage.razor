@@ -10,9 +10,9 @@
         </MudText>
     </MudCardHeader>
     <MudCardContent>
-        <MudText Typo="Typo.caption" Style="padding-left: 18px; padding-bottom: 8px;">File content</MudText>
+        <MudText Typo="Typo.caption" Class="pl-4">File content</MudText>
         <StandaloneCodeEditor @ref="_codeEditor" ConstructionOptions="@EditorConstructionOptions"
-            CssClass="caddy-file-editor global-caddy"></StandaloneCodeEditor>
+            CssClass="caddy-file-editor global-caddy mt-1"></StandaloneCodeEditor>
     </MudCardContent>
     <MudCardActions Class="pb-4 pr-4 d-flex flex-row-reverse gap-4">
         <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>

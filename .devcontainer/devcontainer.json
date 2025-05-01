@@ -33,6 +33,12 @@
   "customizations": {
     "jetbrains": {
       "backend": "Rider"
+    },
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "murugaratham.vscode-dotnet-watch"
+      ]
     }
   },
   "features": {
@@ -43,6 +49,6 @@
   "containerEnv": {
     "Docker__CaddyContainerName": "caddy",
     "Docker__DockerHost": "unix:///var/run/docker.sock",
-    "Caddy__ConfigDir": "/home/vscode/caddy/config",
+    "Caddy__ConfigDir": "/home/vscode/caddy/config"
   }
 }

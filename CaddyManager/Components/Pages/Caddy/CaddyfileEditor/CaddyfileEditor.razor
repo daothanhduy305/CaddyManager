@@ -6,10 +6,10 @@
                       Style="margin-bottom: 8px;"
                       ShrinkLabel="true"
                       ReadOnly="@(!IsNew)"></MudTextField>
-        <MudText Typo="Typo.caption" Style="padding-left: 18px; padding-bottom: 8px;">File content</MudText>
+        <MudText Typo="Typo.caption" class="pl-4">File content</MudText>
         <StandaloneCodeEditor @ref="_codeEditor"
                               ConstructionOptions="@EditorConstructionOptions"
-                              CssClass="caddy-file-editor"></StandaloneCodeEditor>
+                              CssClass="caddy-file-editor mt-1"></StandaloneCodeEditor>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>

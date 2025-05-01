@@ -7,6 +7,9 @@ using MudBlazor;
 
 namespace CaddyManager.Components.Pages.Caddy.CaddyReverseProxies;
 
+/// <summary>
+/// Page to manage reverse proxy configurations in the form of *.caddy files
+/// </summary>
 public partial class CaddyReverseProxiesPage : ComponentBase
 {
     private bool _isProcessing;

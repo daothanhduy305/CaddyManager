@@ -12,12 +12,10 @@
     <MudCardContent>
         <MudText Typo="Typo.caption" Style="padding-left: 18px; padding-bottom: 8px;">File content</MudText>
         <StandaloneCodeEditor @ref="_codeEditor" ConstructionOptions="@EditorConstructionOptions"
-                              CssClass="caddy-file-editor global-caddy"></StandaloneCodeEditor>
+            CssClass="caddy-file-editor global-caddy"></StandaloneCodeEditor>
     </MudCardContent>
-    <MudCardActions>
-        <MudContainer Class="d-flex flex-row-reverse flex-grow-1 gap-4">
-            <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
-            <MudButton OnClick="Cancel">Cancel</MudButton>
-        </MudContainer>
+    <MudCardActions Class="pb-4 pr-4 d-flex flex-row-reverse gap-4">
+        <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
     </MudCardActions>
 </MudCard>

@@ -18,6 +18,11 @@ public class CaddyService(IConfigurationsService configurationsService) : ICaddy
     /// <inheritdoc />
     public List<string> GetExistingCaddyConfigurations()
     {
+        if (!Directory.Exists(Configurations.ConfigDir))
+        {
+            Directory.CreateDirectory(Configurations.ConfigDir);
+        }
+        
         return Directory.GetFiles(Configurations.ConfigDir)
             .Where(filePath => Path.GetFileName(filePath) != CaddyGlobalConfigName)
             .Select(Path.GetFileNameWithoutExtension)

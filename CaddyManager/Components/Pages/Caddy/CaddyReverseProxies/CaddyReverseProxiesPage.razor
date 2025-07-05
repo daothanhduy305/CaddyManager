@@ -21,9 +21,13 @@
 </MudContainer>
 <MudList T="string" Style="padding-top: 16px;" SelectionMode="SelectionMode.MultiSelection"
          @bind-SelectedValues="_selectedCaddyConfigurations">
-    @foreach (var caddyConfig in _availableCaddyConfigurations)
+    @foreach (var (index, caddyConfig) in _availableCaddyConfigurations.Index())
     {
         <CaddyReverseProxyItem FileName="@caddyConfig"/>
-        <MudDivider/>
+        
+        @if (index < _availableCaddyConfigurations.Count - 1)
+        {
+            <MudDivider/>
+        }
     }
 </MudList>

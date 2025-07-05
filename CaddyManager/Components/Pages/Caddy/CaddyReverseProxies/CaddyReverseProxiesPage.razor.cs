@@ -144,4 +144,18 @@ public partial class CaddyReverseProxiesPage : ComponentBase
         // Simply refresh the page with the new debounced text
         Refresh();
     }
+    
+    /// <summary>
+    /// Handle the click event for the search bar adornment. If the debounced text is empty, then simply refresh
+    /// to have the search be effective, otherwise, clear the debounced text to reset the search.
+    /// </summary>
+    private void HandleSearchBarAdornmentClick()
+    {
+        if (!string.IsNullOrWhiteSpace(_debouncedText))
+        {
+            _debouncedText = string.Empty;
+        }
+        
+        Refresh();
+    }
 }

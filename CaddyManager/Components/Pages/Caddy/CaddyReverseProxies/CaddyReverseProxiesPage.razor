@@ -21,7 +21,8 @@
     <MudSpacer />
     <MudTextField T="string" Placeholder="Search..." Adornment="Adornment.End" DebounceInterval="500" 
                   OnDebounceIntervalElapsed="HandleIntervalElapsed" @bind-Value="_debouncedText"
-                  AdornmentIcon="@Icons.Material.Filled.Search"/>
+                  AdornmentIcon="@(string.IsNullOrWhiteSpace(_debouncedText) ? Icons.Material.Filled.Search : Icons.Material.Filled.Close)"
+                  OnAdornmentClick="HandleSearchBarAdornmentClick" />
 </MudContainer>
 <MudList T="string" Style="padding-top: 16px;" SelectionMode="SelectionMode.MultiSelection"
          @bind-SelectedValues="_selectedCaddyConfigurations">

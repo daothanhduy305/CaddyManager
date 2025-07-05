@@ -10,11 +10,16 @@ namespace CaddyManager.Services.Configurations;
 public class ConfigurationsService(IConfiguration configuration) : IConfigurationsService
 {
     /// <inheritdoc />
-    public CaddyServiceConfigurations CaddyServiceConfigurations =>
-        configuration.GetSection(CaddyServiceConfigurations.Caddy).Get<CaddyServiceConfigurations>() ??
-        new CaddyServiceConfigurations();
-
-    public DockerServiceConfiguration DockerServiceConfiguration =>
-        configuration.GetSection(DockerServiceConfiguration.Docker).Get<DockerServiceConfiguration>() ??
-        new DockerServiceConfiguration();
+    public T Get<T>() where T : class
+    {
+        var section = typeof(T).Name;
+        
+        // Have the configuration section name be the section name without the "Configurations" suffix
+        if (section.EndsWith("Configurations"))
+            section = section[..^"Configurations".Length];
+        else if (section.EndsWith("Configuration"))
+            section = section[..^"Configuration".Length];
+        
+        return configuration.GetSection(section).Get<T>() ?? Activator.CreateInstance<T>();
+    }
 }

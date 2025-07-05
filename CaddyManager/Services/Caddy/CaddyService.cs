@@ -13,7 +13,7 @@ public class CaddyService(IConfigurationsService configurationsService) : ICaddy
     /// </summary>
     private const string CaddyGlobalConfigName = "Caddyfile";
 
-    private CaddyServiceConfigurations Configurations => configurationsService.CaddyServiceConfigurations;
+    private CaddyServiceConfigurations Configurations => configurationsService.Get<CaddyServiceConfigurations>();
 
     /// <inheritdoc />
     public List<string> GetExistingCaddyConfigurations()

@@ -9,7 +9,7 @@ namespace CaddyManager.Services.Docker;
 /// <inheritdoc />
 public class DockerService(IConfigurationsService configurationsService) : IDockerService
 {
-    private DockerServiceConfiguration Configuration => configurationsService.DockerServiceConfiguration;
+    private DockerServiceConfiguration Configuration => configurationsService.Get<DockerServiceConfiguration>();
 
     /// <summary>
     /// Method to get the container id of the Caddy container by the name configured

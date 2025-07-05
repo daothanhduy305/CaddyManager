@@ -9,12 +9,10 @@ namespace CaddyManager.Contracts.Configurations;
 public interface IConfigurationsService
 {
     /// <summary>
-    /// Configurations for Caddy service
+    /// Method extracting the configurations from the appsettings.json file or environment variables base on the
+    /// type of the configuration class to determine the section name
     /// </summary>
-    CaddyServiceConfigurations CaddyServiceConfigurations { get; }
-    
-    /// <summary>
-    /// Configurations for Docker service
-    /// </summary>
-    DockerServiceConfiguration DockerServiceConfiguration { get; }
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    T Get<T>() where T : class;
 }

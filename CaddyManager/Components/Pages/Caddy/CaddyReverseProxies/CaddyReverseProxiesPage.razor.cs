@@ -15,6 +15,7 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     private bool _isProcessing;
     private List<string> _availableCaddyConfigurations = [];
     private IReadOnlyCollection<string> _selectedCaddyConfigurations = [];
+    private string _debouncedText = string.Empty;
 
     [Inject] private ICaddyService CaddyService { get; set; } = null!;
 
@@ -61,7 +62,10 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     /// </summary>
     private void Refresh()
     {
-        _availableCaddyConfigurations = CaddyService.GetExistingCaddyConfigurations();
+        var notSearching = string.IsNullOrWhiteSpace(_debouncedText);
+        _availableCaddyConfigurations = CaddyService.GetExistingCaddyConfigurations()
+            .Where(confName => notSearching || confName.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase))
+            .ToList();
         StateHasChanged();
     }
 
@@ -129,5 +133,15 @@ public partial class CaddyReverseProxiesPage : ComponentBase
         {
             Snackbar.Add("Failed to restart the Caddy container", Severity.Error);
         }
+    }
+    
+    /// <summary>
+    /// Handle the interval elapsed event for debounced text input for search functionality.
+    /// </summary>
+    /// <param name="debouncedText"></param>
+    private void HandleIntervalElapsed(string debouncedText)
+    {
+        // Simply refresh the page with the new debounced text
+        Refresh();
     }
 }

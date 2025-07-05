@@ -18,6 +18,10 @@
     {
         <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
     }
+    <MudSpacer />
+    <MudTextField T="string" Placeholder="Search..." Adornment="Adornment.End" DebounceInterval="500" 
+                  OnDebounceIntervalElapsed="HandleIntervalElapsed" @bind-Value="_debouncedText"
+                  AdornmentIcon="@Icons.Material.Filled.Search"/>
 </MudContainer>
 <MudList T="string" Style="padding-top: 16px;" SelectionMode="SelectionMode.MultiSelection"
          @bind-SelectedValues="_selectedCaddyConfigurations">

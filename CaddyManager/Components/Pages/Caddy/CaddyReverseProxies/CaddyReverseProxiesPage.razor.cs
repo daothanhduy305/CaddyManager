@@ -2,6 +2,7 @@ using System.Globalization;
 using CaddyManager.Components.Pages.Generic;
 using CaddyManager.Contracts.Caddy;
 using CaddyManager.Contracts.Docker;
+using Humanizer;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -75,20 +76,21 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     /// </summary>
     private Task Delete()
     {
-        var confWord = _selectedCaddyConfigurations.Count > 1 ? "configurations" : "configuration";
+        var confWord = "configuration".ToQuantity(_selectedCaddyConfigurations.Count, ShowQuantityAs.None);
 
-        return DialogService.ShowAsync<ConfirmationDialog>($"Delete {confWord}", options: new DialogOptions
+        return DialogService.ShowAsync<ConfirmationDialog>($"Delete {_selectedCaddyConfigurations.Count} {confWord}", options: new DialogOptions
         {
             FullWidth = true,
             MaxWidth = MaxWidth.ExtraSmall
-        }, parameters: new DialogParameters
+        }, parameters: new DialogParameters<ConfirmationDialog>
         {
             {
-                "Message",
-                $"Are you sure you want to delete the selected {confWord}?"
+                p => p.Message,
+                $"Are you sure to delete the selected {confWord}?\n\n" +
+                $"{string.Join("\n", _selectedCaddyConfigurations.Select(c => $"⏵\t{c}"))}"
             },
             {
-                "OnConfirm", EventCallback.Factory.Create(this, () =>
+                p => p.OnConfirm, EventCallback.Factory.Create(this, () =>
                 {
                     var response = CaddyService.DeleteCaddyConfigurations(_selectedCaddyConfigurations.ToList());
 
@@ -108,9 +110,9 @@ public partial class CaddyReverseProxiesPage : ComponentBase
                     }
                 })
             },
-            { "ConfirmText", "Yes" },
-            { "ConfirmColor", Color.Error },
-            { "CancelText", "No" }
+            { p => p.ConfirmText, "Yes" },
+            { p => p.ConfirmColor, Color.Error },
+            { p => p.CancelText, "No" }
         });
     }
 

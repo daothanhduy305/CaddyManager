@@ -10,6 +10,7 @@ namespace CaddyManager.Components.Pages.Caddy.CaddyReverseProxies;
 /// <summary>
 /// Page to manage reverse proxy configurations in the form of *.caddy files
 /// </summary>
+// ReSharper disable once ClassNeverInstantiated.Global
 public partial class CaddyReverseProxiesPage : ComponentBase
 {
     private bool _isProcessing;
@@ -43,7 +44,7 @@ public partial class CaddyReverseProxiesPage : ComponentBase
             options: new DialogOptions
             {
                 FullWidth = true,
-                MaxWidth = MaxWidth.Medium,
+                MaxWidth = MaxWidth.Medium
             }, parameters: new DialogParameters
             {
                 { "FileName", string.Empty }
@@ -79,7 +80,7 @@ public partial class CaddyReverseProxiesPage : ComponentBase
         return DialogService.ShowAsync<ConfirmationDialog>($"Delete {confWord}", options: new DialogOptions
         {
             FullWidth = true,
-            MaxWidth = MaxWidth.ExtraSmall,
+            MaxWidth = MaxWidth.ExtraSmall
         }, parameters: new DialogParameters
         {
             {

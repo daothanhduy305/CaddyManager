@@ -1,4 +1,5 @@
 using CaddyManager.Contracts.Caddy;
+using CaddyManager.Models.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -17,10 +18,33 @@ public partial class CaddyReverseProxyItem : ComponentBase
     
     [Inject]
     private ICaddyService CaddyService { get; set; } = null!;
-
-    private Task Edit()
+    
+    private CaddyConfigurationInfo ConfigurationInfo { get; set; } = new();
+    
+    /// <summary>
+    /// Refresh the current state of the component.
+    /// </summary>
+    private void Refresh()
     {
-        return DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>("Caddy file", options: new DialogOptions
+        ConfigurationInfo = CaddyService.GetCaddyConfigurationInfo(FileName);
+        StateHasChanged();
+    }
+
+    /// <inheritdoc />
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender) return;
+        
+        Refresh();
+    }
+
+    /// <summary>
+    /// Show the Caddy file editor dialog
+    /// </summary>
+    /// <returns></returns>
+    private async Task Edit()
+    {
+        var dialog = await DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>("Caddy file", options: new DialogOptions
         {
             FullWidth = true,
             MaxWidth = MaxWidth.Medium,
@@ -28,5 +52,9 @@ public partial class CaddyReverseProxyItem : ComponentBase
         {
             { "FileName", FileName }
         });
+
+        await dialog.Result;
+        
+        Refresh();
     }
 }

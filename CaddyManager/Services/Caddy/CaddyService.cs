@@ -6,7 +6,9 @@ using CaddyManager.Models.Caddy;
 namespace CaddyManager.Services.Caddy;
 
 /// <inheritdoc />
-public class CaddyService(IConfigurationsService configurationsService) : ICaddyService
+public class CaddyService(
+    IConfigurationsService configurationsService,
+    ICaddyConfigurationParsingService parsingService) : ICaddyService
 {
     /// <summary>
     /// File name of the global configuration Caddyfile
@@ -22,7 +24,7 @@ public class CaddyService(IConfigurationsService configurationsService) : ICaddy
         {
             Directory.CreateDirectory(Configurations.ConfigDir);
         }
-        
+
         return Directory.GetFiles(Configurations.ConfigDir)
             .Where(filePath => Path.GetFileName(filePath) != CaddyGlobalConfigName)
             .Select(Path.GetFileNameWithoutExtension)
@@ -134,5 +136,22 @@ public class CaddyService(IConfigurationsService configurationsService) : ICaddy
                 : $"Failed to delete the following configuration(s): {string.Join(", ", failed)}",
             DeletedConfigurations = configurationNames.Except(failed).ToList()
         };
+    }
+
+    /// <inheritdoc />
+    public CaddyConfigurationInfo GetCaddyConfigurationInfo(string configurationName)
+    {
+        var result = new CaddyConfigurationInfo();
+        var content = GetCaddyConfigurationContent(configurationName);
+        if (string.IsNullOrWhiteSpace(content))
+        {
+            return result;
+        }
+        
+        result.Hostnames = parsingService.GetHostnamesFromCaddyfileContent(content);
+        result.ReverseProxyHostname = parsingService.GetReverseProxyTargetFromCaddyfileContent(content);
+        result.ReverseProxyPorts  = parsingService.GetReverseProxyPortsFromCaddyfileContent(content);
+
+        return result;
     }
 }

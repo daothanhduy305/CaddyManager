@@ -22,7 +22,7 @@
       "Blazor": {
         "commandName": "Executable",
         "workingDirectory": "$(ProjectDir)",
-        "executablePath": "/Users/ebolo/.dotnet/dotnet",
+        "executablePath": "/usr/bin/dotnet",
         "commandLineArgs": "watch run debug --launch-profile http"
       }
     }

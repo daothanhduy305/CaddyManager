@@ -47,4 +47,11 @@ public interface ICaddyService
     /// <param name="configurationNames"></param>
     /// <returns></returns>
     CaddyDeleteOperationResponse DeleteCaddyConfigurations(List<string> configurationNames);
+    
+    /// <summary>
+    /// Parse the Caddy configuration file and return the information about it
+    /// </summary>
+    /// <param name="configurationName"></param>
+    /// <returns></returns>
+    CaddyConfigurationInfo GetCaddyConfigurationInfo(string configurationName);
 }

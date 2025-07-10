@@ -1,8 +1,35 @@
+@using Humanizer
 @attribute [StreamRendering]
 
 <MudListItem T="string" Text="@FileName" OnClick="Edit" OnClickPreventDefault="true">
     <MudContainer Class="d-flex flex-row flex-grow-1 gap-4">
         <MudIcon Icon="@Icons.Custom.FileFormats.FileCode"></MudIcon>
         <MudText>@FileName</MudText>
+        <MudSpacer/>
+        <MudChip T="string" Variant="Variant.Outlined">@ConfigurationInfo.ReverseProxyHostname</MudChip>
+        <MudTooltip Delay="0" Placement="Placement.Left">
+            <ChildContent>
+                <MudChip T="string" Variant="Variant.Outlined" Style="width: 80px;"
+                         Color="Color.Primary">@("site".ToQuantity(ConfigurationInfo.Hostnames.Count))</MudChip>
+            </ChildContent>
+            <TooltipContent>
+                @foreach (var hostname in ConfigurationInfo.Hostnames)
+                {
+                    <MudText Align="Align.Start">⏵ @hostname</MudText>
+                }
+            </TooltipContent>
+        </MudTooltip>
+        <MudTooltip Delay="0" Placement="Placement.Left">
+            <ChildContent>
+                <MudChip T="string" Variant="Variant.Outlined" Style="min-width: 80px;"
+                         Color="Color.Secondary">@("port".ToQuantity(ConfigurationInfo.ReverseProxyPorts.Count))</MudChip>
+            </ChildContent>
+            <TooltipContent>
+                @foreach (var port in ConfigurationInfo.ReverseProxyPorts)
+                {
+                    <MudText Align="Align.Start">⏵ @port</MudText>
+                }
+            </TooltipContent>
+        </MudTooltip>
     </MudContainer>
 </MudListItem>

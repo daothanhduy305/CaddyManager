@@ -24,7 +24,7 @@
                   AdornmentIcon="@(string.IsNullOrWhiteSpace(_debouncedText) ? Icons.Material.Filled.Search : Icons.Material.Filled.Close)"
                   OnAdornmentClick="HandleSearchBarAdornmentClick" />
 </MudContainer>
-<MudList T="string" Style="padding-top: 16px;" SelectionMode="SelectionMode.MultiSelection"
+<MudList T="string" Class="pt-10" SelectionMode="SelectionMode.MultiSelection"
          @bind-SelectedValues="_selectedCaddyConfigurations">
     @foreach (var (index, caddyConfig) in _availableCaddyConfigurations.Index())
     {

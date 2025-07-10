@@ -2,7 +2,7 @@
 @attribute [StreamRendering]
 
 <MudListItem T="string" Text="@FileName" OnClick="Edit" OnClickPreventDefault="true">
-    <MudContainer Class="d-flex flex-row flex-grow-1 gap-4">
+    <MudStack Row AlignItems="AlignItems.Center" Class="pl-2">
         <MudIcon Icon="@Icons.Custom.FileFormats.FileCode"></MudIcon>
         <MudText>@FileName</MudText>
         <MudSpacer/>
@@ -31,5 +31,5 @@
                 }
             </TooltipContent>
         </MudTooltip>
-    </MudContainer>
+    </MudStack>
 </MudListItem>

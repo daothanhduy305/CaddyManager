@@ -18,18 +18,23 @@ public class CaddyService(
     private CaddyServiceConfigurations Configurations => configurationsService.Get<CaddyServiceConfigurations>();
 
     /// <inheritdoc />
-    public List<string> GetExistingCaddyConfigurations()
+    public List<CaddyConfigurationInfo> GetExistingCaddyConfigurations()
     {
         if (!Directory.Exists(Configurations.ConfigDir))
         {
             Directory.CreateDirectory(Configurations.ConfigDir);
         }
 
-        return Directory.GetFiles(Configurations.ConfigDir)
+        return [.. Directory.GetFiles(Configurations.ConfigDir)
             .Where(filePath => Path.GetFileName(filePath) != CaddyGlobalConfigName)
-            .Select(Path.GetFileNameWithoutExtension)
-            .Order()
-            .ToList()!;
+            .Select(filePath =>
+            {
+                var fileName = Path.GetFileNameWithoutExtension(filePath);
+                var info = GetCaddyConfigurationInfo(fileName);
+                info.FileName = fileName;
+                return info;
+            })
+            .OrderBy(info => info.FileName)];
     }
 
     /// <inheritdoc />

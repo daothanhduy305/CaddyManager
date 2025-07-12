@@ -11,7 +11,7 @@ public interface ICaddyService
     /// Returns the existing Caddy configurations within the configured directory
     /// </summary>
     /// <returns></returns>
-    List<string> GetExistingCaddyConfigurations();
+    List<CaddyConfigurationInfo> GetExistingCaddyConfigurations();
     
     /// <summary>
     /// Method to get the content of a Caddy configuration file by its name

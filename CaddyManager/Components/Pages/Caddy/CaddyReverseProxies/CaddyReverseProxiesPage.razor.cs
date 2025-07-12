@@ -2,9 +2,11 @@ using System.Globalization;
 using CaddyManager.Components.Pages.Generic;
 using CaddyManager.Contracts.Caddy;
 using CaddyManager.Contracts.Docker;
+using CaddyManager.Models.Caddy;
 using Humanizer;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using CaddyfileEditorComponent = CaddyManager.Components.Pages.Caddy.CaddyfileEditor.CaddyfileEditor;
 
 namespace CaddyManager.Components.Pages.Caddy.CaddyReverseProxies;
 
@@ -15,8 +17,8 @@ namespace CaddyManager.Components.Pages.Caddy.CaddyReverseProxies;
 public partial class CaddyReverseProxiesPage : ComponentBase
 {
     private bool _isProcessing;
-    private List<string> _availableCaddyConfigurations = [];
-    private IReadOnlyCollection<string> _selectedCaddyConfigurations = [];
+    private List<CaddyConfigurationInfo> _availableCaddyConfigurations = [];
+    private IReadOnlyCollection<CaddyConfigurationInfo> _selectedCaddyConfigurations = [];
     private string _debouncedText = string.Empty;
 
     [Inject] private ICaddyService CaddyService { get; set; } = null!;
@@ -41,14 +43,14 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     /// <returns></returns>
     private async Task NewReverseProxy()
     {
-        var dialog = await DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>("New configuration",
-            options: new MudBlazor.DialogOptions
+        var dialog = await DialogService.ShowAsync<CaddyfileEditorComponent>("New configuration",
+            options: new DialogOptions
             {
                 FullWidth = true,
-                MaxWidth = MudBlazor.MaxWidth.Medium
-            }, parameters: new MudBlazor.DialogParameters
+                MaxWidth = MaxWidth.Medium
+            }, parameters: new DialogParameters<CaddyfileEditorComponent>
             {
-                { "FileName", string.Empty }
+                { p => p.FileName, string.Empty }
             });
 
         var result = await dialog.Result;
@@ -66,9 +68,9 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     private void Refresh()
     {
         var notSearching = string.IsNullOrWhiteSpace(_debouncedText);
-        _availableCaddyConfigurations = CaddyService.GetExistingCaddyConfigurations()
-            .Where(confName => notSearching || confName.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase))
-            .ToList();
+        _availableCaddyConfigurations = [..CaddyService.GetExistingCaddyConfigurations()
+            .Where(conf => notSearching || conf.FileName.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase) || conf.ReverseProxyHostname.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase))
+            .OrderBy(conf => conf.FileName)];
         StateHasChanged();
     }
 
@@ -93,10 +95,10 @@ public partial class CaddyReverseProxiesPage : ComponentBase
             {
                 p => p.OnConfirm, EventCallback.Factory.Create(this, () =>
                 {
-                    var response = CaddyService.DeleteCaddyConfigurations(_selectedCaddyConfigurations.ToList());
+                    var response = CaddyService.DeleteCaddyConfigurations(_selectedCaddyConfigurations.Select(c => c.FileName).ToList());
 
                     _selectedCaddyConfigurations =
-                        _selectedCaddyConfigurations.Except(response.DeletedConfigurations).ToList();
+                        _selectedCaddyConfigurations.Where(c => !response.DeletedConfigurations.Contains(c.FileName)).ToList();
 
                     if (response.Success)
                     {

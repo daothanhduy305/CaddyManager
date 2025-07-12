@@ -1,5 +1,6 @@
 ﻿@page "/"
 @attribute [StreamRendering]
+@using CaddyManager.Models.Caddy
 
 <PageTitle>Reverse proxy configurations</PageTitle>
 
@@ -24,11 +25,11 @@
                   AdornmentIcon="@(string.IsNullOrWhiteSpace(_debouncedText) ? Icons.Material.Filled.Search : Icons.Material.Filled.Close)"
                   OnAdornmentClick="HandleSearchBarAdornmentClick" />
 </MudContainer>
-<MudList T="string" Class="pt-10" SelectionMode="SelectionMode.MultiSelection"
+<MudList T="CaddyConfigurationInfo" Class="pt-10" SelectionMode="SelectionMode.MultiSelection"
          @bind-SelectedValues="_selectedCaddyConfigurations">
     @foreach (var (index, caddyConfig) in _availableCaddyConfigurations.Index())
     {
-        <CaddyReverseProxyItem FileName="@caddyConfig" OnCaddyRestartRequired="@RestartCaddy"/>
+        <CaddyReverseProxyItem ConfigurationInfo="@caddyConfig" OnCaddyRestartRequired="@RestartCaddy"/>
         
         @if (index < _availableCaddyConfigurations.Count - 1)
         {

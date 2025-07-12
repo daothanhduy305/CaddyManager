@@ -1,10 +1,11 @@
 @using Humanizer
+@using CaddyManager.Models.Caddy
 @attribute [StreamRendering]
 
-<MudListItem T="string" Text="@FileName" OnClick="Edit" OnClickPreventDefault="true">
+<MudListItem T="CaddyConfigurationInfo" Text="@ConfigurationInfo.FileName" OnClick="Edit" OnClickPreventDefault="true">
     <MudStack Row AlignItems="AlignItems.Center" Class="pl-2">
         <MudIcon Icon="@Icons.Custom.FileFormats.FileCode"></MudIcon>
-        <MudText>@FileName</MudText>
+        <MudText>@ConfigurationInfo.FileName</MudText>
         <MudSpacer/>
         <MudChip T="string" Variant="Variant.Outlined">@ConfigurationInfo.ReverseProxyHostname</MudChip>
         <MudTooltip Delay="0" Placement="Placement.Left">

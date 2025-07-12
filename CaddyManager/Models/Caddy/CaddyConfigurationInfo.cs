@@ -19,4 +19,9 @@ public class CaddyConfigurationInfo
     /// Ports being used with the reverse proxy hostname
     /// </summary>
     public List<int> ReverseProxyPorts { get; set; } = [];
+
+    /// <summary>
+    /// The name of the configuration file.
+    /// </summary>
+    public string FileName { get; set; } = string.Empty;
 }

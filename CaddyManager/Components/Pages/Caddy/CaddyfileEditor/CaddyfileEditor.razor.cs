@@ -3,9 +3,13 @@ using CaddyManager.Contracts.Caddy;
 using CaddyManager.Models.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using CaddyManager.Contracts.Docker;
 
 namespace CaddyManager.Components.Pages.Caddy.CaddyfileEditor;
 
+/// <summary>
+/// Caddyfile editor component that allows the user to edit the Caddy configuration file
+/// </summary>
 public partial class CaddyfileEditor : ComponentBase
 {
     private string _caddyConfigurationContent = string.Empty;
@@ -23,6 +27,7 @@ public partial class CaddyfileEditor : ComponentBase
     [Inject] private ICaddyService CaddyService { get; set; } = null!;
 
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] private IDockerService DockerService { get; set; } = null!;
 
     protected override Task OnInitializedAsync()
     {
@@ -37,6 +42,11 @@ public partial class CaddyfileEditor : ComponentBase
         return base.OnInitializedAsync();
     }
 
+    /// <summary>
+    /// Returns the construction options for the Caddy configuration file editor
+    /// </summary>
+    /// <param name="editor">The Caddy configuration file editor</param>
+    /// <returns>The construction options for the Caddy configuration file editor</returns>
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         return new StandaloneEditorConstructionOptions
@@ -53,6 +63,9 @@ public partial class CaddyfileEditor : ComponentBase
         };
     }
 
+    /// <summary>
+    /// Saves the Caddy configuration file
+    /// </summary>
     private async Task Submit()
     {
         var response = CaddyService.SaveCaddyConfiguration(new CaddySaveConfigurationRequest
@@ -69,9 +82,35 @@ public partial class CaddyfileEditor : ComponentBase
         }
         else
         {
-            Snackbar.Add("Failed to save Caddy configuration", Severity.Error);
+            Snackbar.Add(response.Message, Severity.Error);
         }
     }
 
-    private void Cancel() => MudDialog.Cancel();
+    /// <summary>
+    /// Cancels the Caddy configuration file editor
+    /// </summary>
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    /// <summary>
+    /// Saves the Caddy configuration file and restarts the Caddy container
+    /// </summary>
+    private async Task SaveAndRestart()
+    {
+        await Submit();
+        
+        // Restart the Caddy container
+        try
+        {
+            Snackbar.Add("Restarting Caddy container", Severity.Info);
+            await DockerService.RestartCaddyContainerAsync();
+            Snackbar.Add("Caddy container restarted successfully", Severity.Success);
+        }
+        catch
+        {
+            Snackbar.Add("Failed to restart the Caddy container", Severity.Error);
+        }
+    }
 }

@@ -5,6 +5,10 @@ using MudBlazor;
 
 namespace CaddyManager.Components.Pages.Caddy.CaddyReverseProxies;
 
+/// <summary>
+/// Caddy reverse proxy item component that displays the Caddy configuration file name along with other information
+/// such as the number of hostnames and ports and allows the user to edit it
+/// </summary>
 public partial class CaddyReverseProxyItem : ComponentBase
 {
     /// <summary>
@@ -13,9 +17,15 @@ public partial class CaddyReverseProxyItem : ComponentBase
     [Parameter]
     public string FileName { get; set; } = string.Empty;
     
+    /// <summary>
+    /// Dialog service for showing the Caddy file editor dialog
+    /// </summary>
     [Inject]
     private IDialogService DialogService { get; set; } = null!;
     
+    /// <summary>
+    /// Caddy service for getting the Caddy configuration file information
+    /// </summary>
     [Inject]
     private ICaddyService CaddyService { get; set; } = null!;
     

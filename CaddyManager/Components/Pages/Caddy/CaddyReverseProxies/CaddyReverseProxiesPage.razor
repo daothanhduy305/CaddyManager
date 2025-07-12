@@ -28,7 +28,7 @@
          @bind-SelectedValues="_selectedCaddyConfigurations">
     @foreach (var (index, caddyConfig) in _availableCaddyConfigurations.Index())
     {
-        <CaddyReverseProxyItem FileName="@caddyConfig"/>
+        <CaddyReverseProxyItem FileName="@caddyConfig" OnCaddyRestartRequired="@RestartCaddy"/>
         
         @if (index < _availableCaddyConfigurations.Count - 1)
         {

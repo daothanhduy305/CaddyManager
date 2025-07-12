@@ -42,11 +42,11 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     private async Task NewReverseProxy()
     {
         var dialog = await DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>("New configuration",
-            options: new DialogOptions
+            options: new MudBlazor.DialogOptions
             {
                 FullWidth = true,
-                MaxWidth = MaxWidth.Medium
-            }, parameters: new DialogParameters
+                MaxWidth = MudBlazor.MaxWidth.Medium
+            }, parameters: new MudBlazor.DialogParameters
             {
                 { "FileName", string.Empty }
             });
@@ -56,6 +56,7 @@ public partial class CaddyReverseProxiesPage : ComponentBase
         if (result is { Data: bool, Canceled: false } && (bool)result.Data)
         {
             Refresh();
+            await RestartCaddy();
         }
     }
 
@@ -127,6 +128,8 @@ public partial class CaddyReverseProxiesPage : ComponentBase
             _isProcessing = true;
             StateHasChanged();
             Snackbar.Add("Restarting Caddy container", Severity.Info);
+            // Added a small delay for debugging purposes to ensure UI renders
+            await Task.Delay(100);
             await DockerService.RestartCaddyContainerAsync();
             Snackbar.Add("Caddy container restarted successfully", Severity.Success);
             _isProcessing = false;

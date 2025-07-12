@@ -16,6 +16,12 @@ public partial class CaddyReverseProxyItem : ComponentBase
     /// </summary>
     [Parameter]
     public string FileName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Callback to refresh the Caddy reverse proxies on the main page
+    /// </summary>
+    [Parameter]
+    public EventCallback OnCaddyRestartRequired { get; set; }
     
     /// <summary>
     /// Dialog service for showing the Caddy file editor dialog
@@ -63,8 +69,13 @@ public partial class CaddyReverseProxyItem : ComponentBase
             { "FileName", FileName }
         });
 
-        await dialog.Result;
+        var result = await dialog.Result;
         
+        if (result is { Data: bool, Canceled: false } && (bool)result.Data)
+        {
+            await OnCaddyRestartRequired.InvokeAsync();
+        }
+
         Refresh();
     }
 }

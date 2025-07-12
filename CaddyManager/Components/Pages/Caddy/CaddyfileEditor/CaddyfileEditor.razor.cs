@@ -78,11 +78,12 @@ public partial class CaddyfileEditor : ComponentBase
         if (response.Success)
         {
             Snackbar.Add($"{FileName} Caddy configuration saved successfully", Severity.Success);
-            MudDialog.Close(DialogResult.Ok(true));
+            MudDialog.Close(DialogResult.Ok(false)); // Indicate successful save but no restart
         }
         else
         {
             Snackbar.Add(response.Message, Severity.Error);
+            MudDialog.Close(DialogResult.Ok(false)); // Indicate failed save
         }
     }
 
@@ -99,18 +100,24 @@ public partial class CaddyfileEditor : ComponentBase
     /// </summary>
     private async Task SaveAndRestart()
     {
-        await Submit();
-        
-        // Restart the Caddy container
-        try
+        var submitResponse = CaddyService.SaveCaddyConfiguration(new CaddySaveConfigurationRequest
         {
-            Snackbar.Add("Restarting Caddy container", Severity.Info);
-            await DockerService.RestartCaddyContainerAsync();
-            Snackbar.Add("Caddy container restarted successfully", Severity.Success);
+            IsNew = IsNew,
+            FileName = FileName,
+            Content = await _codeEditor.GetValue(),
+        });
+
+        if (submitResponse.Success)
+        {
+            Snackbar.Add($"{FileName} Caddy configuration saved successfully", Severity.Success);
+            // Indicate successful save and that a restart is required by the calling component
+            MudDialog.Close(DialogResult.Ok(true));
         }
-        catch
+        else
         {
-            Snackbar.Add("Failed to restart the Caddy container", Severity.Error);
+            Snackbar.Add(submitResponse.Message, Severity.Error);
+            // Indicate failed save, no restart needed
+            MudDialog.Close(DialogResult.Ok(false));
         }
     }
 }

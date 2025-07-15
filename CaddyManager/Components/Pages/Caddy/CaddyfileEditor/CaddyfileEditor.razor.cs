@@ -24,10 +24,13 @@ public partial class CaddyfileEditor : ComponentBase
 
     [Parameter] public string FileName { get; set; } = string.Empty;
 
+    [Parameter] public string InitialContent { get; set; } = string.Empty;
+
     [Inject] private ICaddyService CaddyService { get; set; } = null!;
 
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
     [Inject] private IDockerService DockerService { get; set; } = null!;
+    [Inject] private IDialogService DialogService { get; set; } = null!;
 
     protected override Task OnInitializedAsync()
     {
@@ -37,6 +40,10 @@ public partial class CaddyfileEditor : ComponentBase
         {
             // Load the content of the Caddy configuration file
             _caddyConfigurationContent = CaddyService.GetCaddyConfigurationContent(FileName);
+        }
+        else if (!string.IsNullOrWhiteSpace(InitialContent))
+        {
+            _caddyConfigurationContent = InitialContent;
         }
 
         return base.OnInitializedAsync();
@@ -119,5 +126,26 @@ public partial class CaddyfileEditor : ComponentBase
             // Indicate failed save, no restart needed
             MudDialog.Close(DialogResult.Ok(false));
         }
+    }
+
+    /// <summary>
+    /// Duplicates the Caddy configuration file
+    /// </summary>
+    private async Task Duplicate()
+    {
+        var content = await _codeEditor.GetValue();
+
+        MudDialog.Close(DialogResult.Ok(false));
+
+        await DialogService.ShowAsync<CaddyfileEditor>("New configuration",
+            options: new DialogOptions
+            {
+                FullWidth = true,
+                MaxWidth = MaxWidth.Medium
+            }, parameters: new DialogParameters<CaddyfileEditor>
+            {
+                { p => p.FileName, string.Empty },
+                { p => p.InitialContent, content }
+            });
     }
 }

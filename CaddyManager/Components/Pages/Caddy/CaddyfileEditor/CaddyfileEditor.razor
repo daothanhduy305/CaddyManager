@@ -15,6 +15,10 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
+        @if (!IsNew)
+        {
+            <MudButton Color="Color.Tertiary" OnClick="Duplicate">Duplicate</MudButton>
+        }
         <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
         <MudButton Color="Color.Secondary" OnClick="SaveAndRestart">Save & Restart</MudButton>
     </DialogActions>

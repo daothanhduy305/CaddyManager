@@ -53,13 +53,8 @@ public partial class CaddyReverseProxiesPage : ComponentBase
                 { p => p.FileName, string.Empty }
             });
 
-        var result = await dialog.Result;
-
-        if (result is { Data: bool, Canceled: false } && (bool)result.Data)
-        {
-            Refresh();
-            await RestartCaddy();
-        }
+        _ = await dialog.Result;
+        Refresh();
     }
 
     /// <summary>

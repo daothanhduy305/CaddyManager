@@ -18,6 +18,9 @@ public partial class CaddyReverseProxyItem : ComponentBase
     public EventCallback OnCaddyRestartRequired { get; set; }
     
     [Parameter]
+    public EventCallback<string> OnCaddyfileDuplicateRequested { get; set; }
+
+    [Parameter]
     public CaddyConfigurationInfo ConfigurationInfo { get; set; } = null!;
     
     /// <summary>
@@ -35,10 +38,11 @@ public partial class CaddyReverseProxyItem : ComponentBase
         var dialog = await DialogService.ShowAsync<CaddyfileEditor.CaddyfileEditor>("Caddy file", options: new DialogOptions
         {
             FullWidth = true,
-            MaxWidth = MudBlazor.MaxWidth.Medium,
-        }, parameters: new MudBlazor.DialogParameters
+            MaxWidth = MaxWidth.Medium,
+        }, parameters: new DialogParameters<CaddyfileEditor.CaddyfileEditor>
         {
-            { "FileName", ConfigurationInfo.FileName }
+            { p => p.FileName, ConfigurationInfo.FileName },
+            { p => p.OnDuplicate, EventCallback.Factory.Create(this, OnCaddyfileDuplicateRequested) }
         });
 
         var result = await dialog.Result;

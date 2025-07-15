@@ -43,6 +43,26 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     /// <returns></returns>
     private async Task NewReverseProxy()
     {
+        await ShowCaddyfileEditorDialog(string.Empty);
+    }
+
+    /// <summary>
+    /// Method to handle duplication of a Caddyfile from the editor dialog.
+    /// </summary>
+    /// <param name="content">The content of the Caddyfile to duplicate.</param>
+    private async Task HandleDuplicateRequest(string content)
+    {
+        await ShowCaddyfileEditorDialog(string.Empty, content);
+    }
+
+    /// <summary>
+    /// Helper to show the Caddyfile editor dialog
+    /// </summary>
+    /// <param name="fileName">The file name to open</param>
+    /// <param name="initialContent">The initial content of the file</param>
+    /// <returns></returns>
+    private async Task ShowCaddyfileEditorDialog(string fileName, string initialContent = "")
+    {
         var dialog = await DialogService.ShowAsync<CaddyfileEditorComponent>("New configuration",
             options: new DialogOptions
             {
@@ -50,7 +70,8 @@ public partial class CaddyReverseProxiesPage : ComponentBase
                 MaxWidth = MaxWidth.Medium
             }, parameters: new DialogParameters<CaddyfileEditorComponent>
             {
-                { p => p.FileName, string.Empty }
+                { p => p.FileName, fileName },
+                { p => p.InitialContent, initialContent }
             });
 
         _ = await dialog.Result;

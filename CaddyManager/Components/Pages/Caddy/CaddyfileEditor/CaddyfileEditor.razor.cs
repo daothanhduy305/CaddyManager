@@ -18,6 +18,11 @@ public partial class CaddyfileEditor : ComponentBase
     [CascadingParameter] private IMudDialogInstance MudDialog { get; set; } = null!;
 
     /// <summary>
+    /// Callback to be invoked when the Caddyfile is duplicated.
+    /// </summary>
+    [Parameter] public EventCallback<string> OnDuplicate { get; set; }
+
+    /// <summary>
     /// Determines if the Caddy configuration file is new
     /// </summary>
     private bool IsNew { get; set; }
@@ -135,17 +140,8 @@ public partial class CaddyfileEditor : ComponentBase
     {
         var content = await _codeEditor.GetValue();
 
-        MudDialog.Close(DialogResult.Ok(false));
+        await OnDuplicate.InvokeAsync(content);
 
-        await DialogService.ShowAsync<CaddyfileEditor>("New configuration",
-            options: new DialogOptions
-            {
-                FullWidth = true,
-                MaxWidth = MaxWidth.Medium
-            }, parameters: new DialogParameters<CaddyfileEditor>
-            {
-                { p => p.FileName, string.Empty },
-                { p => p.InitialContent, content }
-            });
+        MudDialog.Close(DialogResult.Ok(false));
     }
 }

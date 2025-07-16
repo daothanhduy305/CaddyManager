@@ -125,7 +125,7 @@ public partial class CaddyReverseProxiesPage : ComponentBase
             {
                 p => p.Message,
                 $"Are you sure to delete the selected {confWord}?\n\n" +
-                $"{string.Join("\n", _selectedCaddyConfigurations.Select(c => $"⏵\t{c}"))}"
+                $"{string.Join("\n", _selectedCaddyConfigurations.Select(c => $"⏵\t{c.FileName}"))}"
             },
             {
                 p => p.OnConfirm, EventCallback.Factory.Create(this, () =>
@@ -133,7 +133,7 @@ public partial class CaddyReverseProxiesPage : ComponentBase
                     var response = CaddyService.DeleteCaddyConfigurations(_selectedCaddyConfigurations.Select(c => c.FileName).ToList());
 
                     _selectedCaddyConfigurations =
-                        _selectedCaddyConfigurations.Where(c => !response.DeletedConfigurations.Contains(c.FileName)).ToList();
+                        [.. _selectedCaddyConfigurations.Where(c => !response.DeletedConfigurations.Contains(c.FileName))];
 
                     if (response.Success)
                     {

@@ -19,7 +19,7 @@
             <MudText Class="mr-1" Color="Color.Inherit">@ApplicationInfo.Version -</MudText>
             @if(ApplicationInfo.CommitHash != "[DEVELOPMENT]")
             {
-                <MudLink Href=@($"https://github.com/daothanhduy305/CaddyManager/commit/{ApplicationInfo.CommitHash}") Target="_blank">
+                <MudLink Href=@($"https://github.com/daothanhduy305/CaddyManager/commit/{ApplicationInfo.CommitHash}") Target="_blank" Color="Color.Inherit">
                     [@ApplicationInfo.CommitHash]
                 </MudLink>
             }

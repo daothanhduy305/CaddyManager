@@ -32,11 +32,23 @@ jobs:
           cache-dependency-path: '**/packages.lock.json'
       - name: Restore dependencies 
         run: dotnet restore --locked-mode
-      - name: Build solution  
-        run: dotnet build --configuration Release --no-restore
+      - name: Application metadata
+        id: metadata
+        run: |
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "APP_VERSION=$(grep 'public static readonly string Version' CaddyManager/Configurations/Application/ApplicationInfo.cs | sed -E 's/.*"([^"]+)".*/\1/')" >> $GITHUB_OUTPUT
+      - name: Patch application info
+        run: |
+          sed -i "s/public static readonly string CommitHash = \"\[DEVELOPMENT\]\";/public static readonly string CommitHash = \"${{ steps.metadata.outputs.COMMIT_HASH }}\";/" CaddyManager/Configurations/Application/ApplicationInfo.cs
       - name: Publish container
         run: |
           dotnet publish \
           --configuration Release --os linux --arch x64 \
           /t:PublishContainer -p ContainerRegistry=${{ vars.DOCKER_GITEA_DOMAIN }} \
-          -p ContainerRepository=ebolo/caddy-manager
+          -p ContainerRepository=ebolo/caddy-manager -p:ContainerImageTags='${{ steps.metadata.outputs.APP_VERSION }};latest'
+      - name: Deploy to Komodo
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '${{ vars.WINDMILL_DOMAIN }}/komodo/pull-stack/${{ secrets.KOMODO_STACK_ID }}'
+          method: 'PUT'
+          customHeaders: '{"Auth-Key": "${{ secrets.WINDMILL_KEY }}"}'

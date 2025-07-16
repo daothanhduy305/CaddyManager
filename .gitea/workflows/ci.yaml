@@ -45,7 +45,7 @@ jobs:
           dotnet publish \
           --configuration Release --os linux --arch x64 \
           /t:PublishContainer -p ContainerRegistry=${{ vars.DOCKER_GITEA_DOMAIN }} \
-          -p ContainerRepository=ebolo/caddy-manager -p:ContainerImageTags='${{ steps.metadata.outputs.APP_VERSION }};latest'
+          -p ContainerRepository=ebolo/caddy-manager -p:ContainerImageTags='"${{ steps.metadata.outputs.APP_VERSION }};latest"'
       - name: Deploy to Komodo
         uses: fjogeleit/http-request-action@v1
         with:

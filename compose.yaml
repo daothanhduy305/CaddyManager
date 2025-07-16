@@ -6,3 +6,21 @@
     network_mode: "host"
     security_opt:
       - label:disable
+    volumes:
+      - /root/compose/caddy/config:/etc/caddy
+      - /etc/localtime:/etc/localtime:ro
+
+  caddy-manager:
+    image: ghcr.io/daothanhduy305/caddymanager
+    container_name: caddy-manager
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      CaddyService__ConfigDir: "/config"
+      DockerService__CaddyContainerName: "caddy"
+    user: "1000:1000"
+    ports:
+      - "8080:8080"
+    volumes:
+      - /root/compose/caddy/config:/config
+      - /var/run/docker.sock:/var/run/docker.sock

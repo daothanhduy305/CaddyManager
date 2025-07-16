@@ -1,0 +1,44 @@
+name: Caddy Manager CI build
+run-name: ${{ github.actor }} is running CI pipeline
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    env:
+      RUNNER_TOOL_CACHE: /toolcache
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9' # SDK Version to use.
+          dotnet-quality: 'ga'
+          cache: true
+          cache-dependency-path: '**/packages.lock.json'
+      - name: Restore dependencies 
+        run: dotnet restore --locked-mode
+      - name: Application metadata
+        id: metadata
+        run: |
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "APP_VERSION=$(grep 'public static readonly string Version' CaddyManager/Configurations/Application/ApplicationInfo.cs | sed -E 's/.*"([^"]+)".*/\1/')" >> $GITHUB_OUTPUT
+      - name: Patch application info
+        run: |
+          sed -i "s/public static readonly string CommitHash = \"\[DEVELOPMENT\]\";/public static readonly string CommitHash = \"${{ steps.metadata.outputs.COMMIT_HASH }}\";/" CaddyManager/Configurations/Application/ApplicationInfo.cs
+      - name: Publish container
+        run: |
+          dotnet publish \
+          --configuration Release --os linux --arch x64 \
+          /t:PublishContainer -p ContainerRegistry=ghcr.io \
+          -p ContainerRepository=${{ github.repository }} -p:ContainerImageTags='"${{ steps.metadata.outputs.APP_VERSION }};latest"'

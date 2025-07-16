@@ -197,7 +197,7 @@ Currently, the Caddy Manager is able to:
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Parse the caddy files to get more information, i.e. the domain names, the proxy addresses, etc.
+- [x] Parse the caddy files to get more information, i.e. the domain names, the proxy addresses, etc.
 
 See the [open issues](https://pikachu-gitea.duydao.org/ebolo/CaddyManager/issues) for a full list of proposed features (and known issues).
 

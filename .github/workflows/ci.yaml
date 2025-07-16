@@ -6,7 +6,10 @@ on:
       - main
 
 jobs:
-  docker:
+  build:
+    name: Build and push container
+    permissions:
+      packages: write
     env:
       RUNNER_TOOL_CACHE: /toolcache
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages

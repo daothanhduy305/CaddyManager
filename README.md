@@ -36,12 +36,12 @@
   <p align="center">
     A UI for managing Caddy configuration files
     <br />
-    <a href="https://pikachu-gitea.duydao.org/ebolo/CaddyManager/src/branch/main/README.md"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/daothanhduy305/CaddyManager/blob/main/README.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://pikachu-gitea.duydao.org/ebolo/CaddyManager/issues/new">Report Bug (label bug)</a>
+    <a href="https://github.com/daothanhduy305/CaddyManager/issues/new">Report Bug (label bug)</a>
     &middot;
-    <a href="https://pikachu-gitea.duydao.org/ebolo/CaddyManager/issues/new">Request Feature (label enhancement)</a>
+    <a href="https://github.com/daothanhduy305/CaddyManager/issues/new">Request Feature (label enhancement)</a>
 
 [//]: # (    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>)
 
@@ -125,52 +125,46 @@ These software are required to be installed on the host machine:
     - /path/to/configs:/etc/caddy
   ```
 
-### Installation
+### Global Caddy configuration
 
-This repository can be cloned and then built with DotNet. Using the `dotnet publish` command can have the container image built and pushed to the registry.
+Add this directive at the end of your caddy configuration (global):
 
-1. Clone the repo
-   ```shell
-   git clone https://pikachu-gitea.duydao.org/ebolo/CaddyManager.git
-   cd CaddyManager
-   ```
-2. Login to the container registry (optional, only need to publish to a remote registry)
-   ```shell
-   docker login -u $USER_NAME $REGISTRY_URL
-   ```
-3. Build and publish container with DotNet
-   ```shell
-   dotnet publish --os linux --arch x64 /t:PublishContainer -p ContainerRegistry=$REGISTRY_URL
-   ```
-   if publishing to only the local machine, the `ContainerRegistry` parameter can be omitted.
-   ```shell
-   dotnet publish --os linux --arch x64 /t:PublishContainer
-   ```
+```
+import *.caddy
+```
 
-Then the container can be run with Docker compose:
+This is to have the caddy files managed by this application be imported and work as expected.
+
+### Installation with Docker compose
+
 ```yaml
 services:
   caddy:
-    image: caddy-manager:latest
+    image: caddy:latest
+    container_name: caddy
+    restart: always
+    network_mode: "host"
+    security_opt:
+      - label:disable
+    volumes:
+      - /root/compose/caddy/config:/etc/caddy
+      - /etc/localtime:/etc/localtime:ro
+
+  caddy-manager:
+    image: ghcr.io/daothanhduy305/caddymanager
     container_name: caddy-manager
     restart: always
     environment:
-      - Caddy__ConfigDir=/config # The directory where Caddy configuration files are stored
-      - Docker__CaddyContainerName=caddy # The name of the Caddy container
-    user: "${UID}:${GID}"
-    # The user and group ID of the host user having the permission to write to the Caddy configuration directory
+      ASPNETCORE_ENVIRONMENT: "Production"
+      CaddyService__ConfigDir: "/config"
+      DockerService__CaddyContainerName: "caddy"
+    # To have the access to the caddy config file
+    user: "1000:1000"
     ports:
       - "8080:8080"
     volumes:
       - /root/compose/caddy/config:/config
       - /var/run/docker.sock:/var/run/docker.sock
-
-```
-
-Example of `.env` file. The `UID` and `GID` are the user and group ID of the host user having the permission to write to the Caddy configuration directory:
-```shell
-UID=1000 # can be 0 as root user
-GID=1000 # can be 0 as root group
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -180,15 +174,13 @@ GID=1000 # can be 0 as root group
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-TBU.
-
 Currently, the Caddy Manager is able to:
 - List all the Caddy configuration files
 - Edit the content of the Caddy configuration files by clicking on the file name
-- Create a new Caddy configuration file by clicking on the "New" button
-- Delete a Caddy configuration file by clicking on the "Delete" button
+- Create and manage the caddy files
 - Edit the global Caddy configuration file by using the tab "Global Cadddyfile"
-- Have the Caddy container be restarted by clicking on the "Restart" button
+- Restart caddy container on demand
+- Parse simple information from the caddy configurations
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -199,7 +191,7 @@ Currently, the Caddy Manager is able to:
 
 - [x] Parse the caddy files to get more information, i.e. the domain names, the proxy addresses, etc.
 
-See the [open issues](https://pikachu-gitea.duydao.org/ebolo/CaddyManager/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/daothanhduy305/CaddyManager/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -234,7 +226,7 @@ Distributed under the GNU GPLv3 License. See `COPYING` for more information.
 
 Ebolo - [@duydao](https://duydao.org) - daothanhduy305@gmail.com
 
-Project Link: [CaddyManager](https://pikachu-gitea.duydao.org/ebolo/CaddyManager)
+Project Link: [CaddyManager](https://github.com/daothanhduy305/CaddyManager)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

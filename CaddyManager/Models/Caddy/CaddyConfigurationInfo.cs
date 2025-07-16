@@ -29,4 +29,16 @@ public class CaddyConfigurationInfo
     /// Aggregated ports for the reverse proxy hostname from all configurations.
     /// </summary>
     public List<int> AggregatedReverseProxyPorts { get; set; } = [];
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not CaddyConfigurationInfo other)
+            return false;
+        return FileName == other.FileName;
+    }
+
+    public override int GetHashCode()
+    {
+        return FileName.GetHashCode();
+    }
 }

@@ -2,7 +2,7 @@
 @using CaddyManager.Models.Caddy
 @attribute [StreamRendering]
 
-<MudListItem T="CaddyConfigurationInfo" Text="@ConfigurationInfo.FileName" OnClick="Edit" OnClickPreventDefault="true">
+<MudListItem T="CaddyConfigurationInfo" Text="@ConfigurationInfo.FileName" Value="@ConfigurationInfo" OnClick="Edit" OnClickPreventDefault="true">
     <MudStack Row AlignItems="AlignItems.Center" Class="pl-2">
         <MudIcon Icon="@Icons.Custom.FileFormats.FileCode"></MudIcon>
         <MudText>@ConfigurationInfo.FileName</MudText>

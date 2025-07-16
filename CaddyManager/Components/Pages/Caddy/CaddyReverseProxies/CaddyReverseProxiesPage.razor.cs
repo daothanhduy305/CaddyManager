@@ -84,9 +84,28 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     private void Refresh()
     {
         var notSearching = string.IsNullOrWhiteSpace(_debouncedText);
-        _availableCaddyConfigurations = [..CaddyService.GetExistingCaddyConfigurations()
+        var configurations = CaddyService.GetExistingCaddyConfigurations()
             .Where(conf => notSearching || conf.FileName.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase) || conf.ReverseProxyHostname.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase))
-            .OrderBy(conf => conf.FileName)];
+            .OrderBy(conf => conf.FileName)
+            .ToList();
+
+        // Optimize by grouping by ReverseProxyHostname and computing once per group
+        var hostnameToAggregatedPorts = configurations
+            .GroupBy(c => c.ReverseProxyHostname)
+            .ToDictionary(
+                g => g.Key,
+                g => g.SelectMany(c => c.ReverseProxyPorts)
+                      .Distinct()
+                      .OrderBy(p => p)
+                      .ToList()
+            );
+
+        foreach (var config in configurations)
+        {
+            config.AggregatedReverseProxyPorts = hostnameToAggregatedPorts[config.ReverseProxyHostname];
+        }
+
+        _availableCaddyConfigurations = [..configurations];
         StateHasChanged();
     }
 

@@ -7,7 +7,20 @@
         <MudIcon Icon="@Icons.Custom.FileFormats.FileCode"></MudIcon>
         <MudText>@ConfigurationInfo.FileName</MudText>
         <MudSpacer/>
-        <MudChip T="string" Variant="Variant.Outlined">@ConfigurationInfo.ReverseProxyHostname</MudChip>
+        <MudTooltip Delay="0" Placement="Placement.Left">
+            <ChildContent>
+                <MudChip T="string" Variant="Variant.Outlined">@ConfigurationInfo.ReverseProxyHostname</MudChip>
+            </ChildContent>
+            <TooltipContent>
+                @if (ConfigurationInfo.AggregatedReverseProxyPorts?.Count > 0)
+                {
+                    @foreach (var port in ConfigurationInfo.AggregatedReverseProxyPorts.OrderBy(p => p))
+                    {
+                        <MudText Align="Align.Start">⏵ @port</MudText>
+                    }
+                }
+            </TooltipContent>
+        </MudTooltip>
         <MudTooltip Delay="0" Placement="Placement.Left">
             <ChildContent>
                 <MudChip T="string" Variant="Variant.Outlined" Style="width: 80px;"

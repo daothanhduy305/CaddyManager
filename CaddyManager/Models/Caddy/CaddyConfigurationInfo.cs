@@ -24,4 +24,9 @@ public class CaddyConfigurationInfo
     /// The name of the configuration file.
     /// </summary>
     public string FileName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Aggregated ports for the reverse proxy hostname from all configurations.
+    /// </summary>
+    public List<int> AggregatedReverseProxyPorts { get; set; } = [];
 }

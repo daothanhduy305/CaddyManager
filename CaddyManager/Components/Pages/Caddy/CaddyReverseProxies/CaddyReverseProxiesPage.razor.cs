@@ -74,7 +74,13 @@ public partial class CaddyReverseProxiesPage : ComponentBase
                 { p => p.InitialContent, initialContent }
             });
 
-        _ = await dialog.Result;
+        var result = await dialog.Result;
+
+        if (result is { Data: bool, Canceled: false } && (bool)result.Data)
+        {
+            await RestartCaddy();
+        }
+
         Refresh();
     }
 
@@ -175,6 +181,8 @@ public partial class CaddyReverseProxiesPage : ComponentBase
         catch
         {
             Snackbar.Add("Failed to restart the Caddy container", Severity.Error);
+            _isProcessing = false;
+            StateHasChanged();
         }
     }
     

@@ -4,7 +4,7 @@
 
 <PageTitle>Reverse proxy configurations</PageTitle>
 
-<MudContainer Class="d-flex flex-row flex-grow-1 gap-4 align-center">
+<MudStack Row Class="px-20 mud-background-body pt-8">
     <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add"
                OnClick="NewReverseProxy">New...
     </MudButton>
@@ -24,8 +24,9 @@
                   OnDebounceIntervalElapsed="HandleIntervalElapsed" @bind-Value="_debouncedText"
                   AdornmentIcon="@(string.IsNullOrWhiteSpace(_debouncedText) ? Icons.Material.Filled.Search : Icons.Material.Filled.Close)"
                   OnAdornmentClick="HandleSearchBarAdornmentClick" />
-</MudContainer>
-<MudList T="CaddyConfigurationInfo" Class="pt-10" SelectionMode="SelectionMode.MultiSelection"
+</MudStack>
+<MudContainer Class="mt-8 overflow-y-auto" Style="height: calc(100vh - 3 * var(--mud-appbar-height) + 3 * var(--mud-appbar-height)/4 - 8px);">
+    <MudList T="CaddyConfigurationInfo" Class="py-4" SelectionMode="SelectionMode.MultiSelection"
          @bind-SelectedValues="_selectedCaddyConfigurations">
     @foreach (var (index, caddyConfig) in _availableCaddyConfigurations.Index())
     {
@@ -38,3 +39,4 @@
         }
     }
 </MudList>
+</MudContainer>

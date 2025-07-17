@@ -30,10 +30,8 @@
             <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/daothanhduy305/CaddyManager" Target="_blank" />
         </MudAppBar>
         <NavigationDrawer @ref="_drawer"/>
-        <MudMainContent Class="pt-16 px-16 pb-10">
-            <MudContainer Class="mt-6">
-                @Body
-            </MudContainer>
+        <MudMainContent Class="pt-0" Style="height: calc(100vh - var(--mud-appbar-height) + var(--mud-appbar-height)/4); margin-top: calc(var(--mud-appbar-height) - var(--mud-appbar-height)/4);">
+            @Body
         </MudMainContent>
     </MudLayout>
 }

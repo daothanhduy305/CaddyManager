@@ -8,9 +8,11 @@ public partial class CaddyConfigurationParsingService: ICaddyConfigurationParsin
 {
     /// <summary>
     /// Regex to help parse hostnames from a Caddyfile.
+    /// This regex only matches hostname declarations at the beginning of lines (column 1 after optional whitespace)
+    /// and excludes nested directives like "reverse_proxy target {".
     /// </summary>
     /// <returns></returns>
-    [GeneratedRegex(@"(?m)^\s*([^\{\r\n]+?)\s*\{", RegexOptions.Multiline)]
+    [GeneratedRegex(@"(?m)^([^\s\{\r\n][^\{\r\n]*?)\s*\{", RegexOptions.Multiline)]
     private static partial Regex HostnamesRegex();
     
     /// <summary>
@@ -67,8 +69,8 @@ public partial class CaddyConfigurationParsingService: ICaddyConfigurationParsin
 
         foreach (Match match in matches)
         {
-            var parts = match.Value.TrimEnd('}').Trim().Split(' ');
-            var targetPart = parts.LastOrDefault(string.Empty);
+            // Use the captured group which contains the target (e.g., pikachu:3011)
+            var targetPart = match.Groups[1].Value.Trim();
             if (string.IsNullOrEmpty(targetPart)) continue;
 
             var targetComponents = targetPart.Split(':');

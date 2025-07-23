@@ -74,11 +74,9 @@ public class CaddyConfigurationParsingServiceTests
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCount(4); // Updated to reflect correct parsing of labels before blocks
+        result.Should().HaveCount(2); // Should only return outermost hostname declarations
         result.Should().Contain("api.example.com");
         result.Should().Contain("app.example.com");
-        result.Should().Contain("route /v1/*");
-        result.Should().Contain("route /v2/*");
     }
 
     /// <summary>
@@ -522,12 +520,9 @@ app.example.com {
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().HaveCount(5);
+        result.Should().HaveCount(2); // Should only return outermost hostname declarations
         result.Should().Contain("api.example.com");
         result.Should().Contain("app.example.com");
-        result.Should().Contain("header");
-        result.Should().Contain("@cors");
-        result.Should().Contain("tls");
     }
 
     /// <summary>

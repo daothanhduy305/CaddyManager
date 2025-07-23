@@ -1,4 +1,4 @@
-using CaddyManager.Configurations.Docker;
+using CaddyManager.Contracts.Configurations.Docker;
 using CaddyManager.Contracts.Configurations;
 using CaddyManager.Services.Docker;
 using CaddyManager.Tests.TestUtilities;

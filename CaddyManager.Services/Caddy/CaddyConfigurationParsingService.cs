@@ -10,14 +10,14 @@ public partial class CaddyConfigurationParsingService: ICaddyConfigurationParsin
     /// Regex to help parse hostnames from a Caddyfile.
     /// </summary>
     /// <returns></returns>
-    [GeneratedRegex(@"(?m)^[\w.-]+(?:\s*,\s*[\w.-]+)*(?=\s*\{)", RegexOptions.Multiline)]
+    [GeneratedRegex(@"(?m)^\s*([^\{\r\n]+?)\s*\{", RegexOptions.Multiline)]
     private static partial Regex HostnamesRegex();
     
     /// <summary>
     /// Regex to help parse hostnames being used in reverse proxy directives.
     /// </summary>
     /// <returns></returns>
-    [GeneratedRegex(@"(?m)reverse_proxy .*", RegexOptions.Multiline)]
+    [GeneratedRegex(@"(?m)reverse_proxy\s+([^\s\{\}]+)(?:\s*\{)?", RegexOptions.Multiline)]
     private static partial Regex ReverseProxyRegex();
 
     /// <inheritdoc />
@@ -29,7 +29,7 @@ public partial class CaddyConfigurationParsingService: ICaddyConfigurationParsin
         foreach (Match match in matches)
         {
             // Split the matched string by commas and trim whitespace
-            var splitHostnames = match.Value.Split(',')
+            var splitHostnames = match.Groups[1].Value.Split(',')
                 .Select(h => h.Trim())
                 .Where(h => !string.IsNullOrWhiteSpace(h))
                 .ToList();
@@ -47,8 +47,8 @@ public partial class CaddyConfigurationParsingService: ICaddyConfigurationParsin
         var match = reverseProxyRegex.Match(caddyfileContent);
         if (!match.Success) return string.Empty;
 
-        var parts = match.Value.TrimEnd('}').Trim().Split(' ');
-        var targetPart = parts.LastOrDefault(string.Empty);
+        // Use the captured group which contains the target (e.g., pikachu:3011)
+        var targetPart = match.Groups[1].Value.Trim();
         if (string.IsNullOrEmpty(targetPart)) return string.Empty;
 
         var targetComponents = targetPart.Split(':');

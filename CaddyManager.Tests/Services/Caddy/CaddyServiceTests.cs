@@ -1,7 +1,7 @@
-using CaddyManager.Configurations.Caddy;
+using CaddyManager.Contracts.Configurations.Caddy;
 using CaddyManager.Contracts.Caddy;
 using CaddyManager.Contracts.Configurations;
-using CaddyManager.Models.Caddy;
+using CaddyManager.Contracts.Models.Caddy;
 using CaddyManager.Services.Caddy;
 using CaddyManager.Tests.TestUtilities;
 

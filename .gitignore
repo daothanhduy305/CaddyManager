@@ -12,6 +12,7 @@ caddy/
 TestResults/
 coverage-report/
 coverage-results/
+coverage.cobertura.xml
 
 # IDEs
 .cursor/docs/

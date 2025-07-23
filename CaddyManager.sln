@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaddyManager.Contracts", "C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaddyManager.Services", "CaddyManager.Services\CaddyManager.Services.csproj", "{9F385FED-9B25-49EB-84F1-D944B7B91F35}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaddyManager.Tests", "CaddyManager.Tests\CaddyManager.Tests.csproj", "{59569768-C5DB-4A6D-9675-A619158C0761}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,18 @@ Global
 		{9F385FED-9B25-49EB-84F1-D944B7B91F35}.Release|x64.Build.0 = Release|Any CPU
 		{9F385FED-9B25-49EB-84F1-D944B7B91F35}.Release|x86.ActiveCfg = Release|Any CPU
 		{9F385FED-9B25-49EB-84F1-D944B7B91F35}.Release|x86.Build.0 = Release|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Debug|x64.Build.0 = Debug|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Debug|x86.Build.0 = Debug|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Release|x64.ActiveCfg = Release|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Release|x64.Build.0 = Release|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Release|x86.ActiveCfg = Release|Any CPU
+		{59569768-C5DB-4A6D-9675-A619158C0761}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

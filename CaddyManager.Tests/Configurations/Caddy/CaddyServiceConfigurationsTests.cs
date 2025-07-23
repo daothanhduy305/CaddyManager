@@ -1,4 +1,4 @@
-using CaddyManager.Configurations.Caddy;
+using CaddyManager.Contracts.Configurations.Caddy;
 
 namespace CaddyManager.Tests.Configurations.Caddy;
 

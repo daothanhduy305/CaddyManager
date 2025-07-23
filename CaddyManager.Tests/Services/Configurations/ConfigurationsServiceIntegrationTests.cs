@@ -1,5 +1,5 @@
-using CaddyManager.Configurations.Caddy;
-using CaddyManager.Configurations.Docker;
+using CaddyManager.Contracts.Configurations.Caddy;
+using CaddyManager.Contracts.Configurations.Docker;
 using CaddyManager.Services.Configurations;
 using Microsoft.Extensions.Configuration;
 

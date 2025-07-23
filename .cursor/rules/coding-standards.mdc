@@ -1,0 +1,42 @@
+---
+alwaysApply: true
+---
+
+# Coding Standards and Naming Conventions
+
+## Naming Conventions
+- Follow PascalCase for component names, method names, and public members
+- Use camelCase for private fields and local variables
+- Prefix interface names with "I" (e.g., IUserService) and interfaces will be located at the relevant Contracts project.
+- Interface implementations, if not tighten to UI, will be located at the relevant Services project.
+
+## Error Handling and Validation
+- Implement proper error handling for Blazor pages and API calls
+- Use logging for error tracking in the backend and consider capturing UI-level errors in Blazor with tools like ErrorBoundary
+- Implement validation using FluentValidation or DataAnnotations in forms
+
+## Security and Authentication
+- Implement Authentication and Authorization in the Blazor app where necessary using ASP.NET Identity or JWT tokens for API authentication
+- Use HTTPS for all web communication and ensure proper CORS policies are implemented
+
+## API Design and Integration
+- Use HttpClient or other appropriate services to communicate with external APIs or your own backend
+- Implement error handling for API calls using try-catch and provide proper user feedback in the UI
+
+## API Documentation and Swagger
+- Use Swagger/OpenAPI for API documentation for your backend API services
+- Ensure XML documentation for models and API methods for enhancing Swagger documentation
+
+## Utils
+- For JSON processing and utils, we are using Newtonsoft exclusively
+
+## Using and imports
+- Must keep the using and import statements clean and lean, any unecessary statement must be removed.
+
+## Commit Conventions
+- Always follow git commit conventions
+
+## Implementation details
+- Interfaces and models live in the .Contracts projects
+- Implementations of services live in the .Service projects
+- UI code lives in the main app project

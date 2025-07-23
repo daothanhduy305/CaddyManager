@@ -1,0 +1,14 @@
+---
+alwaysApply: true
+---
+# State Management and Caching Strategies
+
+## Caching Strategies
+- Implement in-memory caching for frequently used data, especially for Blazor Server apps. Use IMemoryCache for lightweight caching solutions
+- For Blazor, utilize EboloState (create the inheritance states where necessary) to cache application state between user sessions
+- Consider Distributed Cache strategies (like Redis or SQL Server Cache) for larger applications that need shared state across multiple users or clients
+- Cache API calls by storing responses to avoid redundant calls when data is unlikely to change, thus improving the user experience
+
+## State Management Libraries
+- For server-side Blazor, use Scoped Services and the StateContainer pattern to manage state within user sessions while minimizing re-renders
+ 

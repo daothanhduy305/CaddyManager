@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage">
+        <Configuration>
+          <Format>cobertura</Format>
+          <!-- Explicitly include Contracts and Services assemblies -->
+          <Include>[CaddyManager.Contracts]CaddyManager.Contracts.*</Include>
+          <Include>[CaddyManager.Services]CaddyManager.Services.*</Include>
+
+          <!-- Exclusions for test and external code -->
+          <Exclude>[*]Tests.*</Exclude>
+          <Exclude>[*]TestUtilities.*</Exclude>
+          <Exclude>[*]Microsoft.*</Exclude>
+          <Exclude>[*]System.*</Exclude>
+          <Exclude>[*]Moq.*</Exclude>
+          <Exclude>[*]FluentAssertions.*</Exclude>
+          <Exclude>[*]xunit.*</Exclude>
+          <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+          <SingleHit>false</SingleHit>
+          <UseSourceLink>true</UseSourceLink>
+          <IncludeTestAssembly>false</IncludeTestAssembly>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>

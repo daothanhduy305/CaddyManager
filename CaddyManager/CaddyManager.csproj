@@ -26,4 +26,9 @@
       <PackageReference Include="NetCore.AutoRegisterDi" Version="2.2.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CaddyManager.Contracts\CaddyManager.Contracts.csproj" />
+      <ProjectReference Include="..\CaddyManager.Services\CaddyManager.Services.csproj" />
+    </ItemGroup>
+
 </Project>

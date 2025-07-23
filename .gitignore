@@ -7,3 +7,11 @@ riderModule.iml
 *.sln.DotSettings.user
 .vscode/
 caddy/
+
+# Test results
+TestResults/
+coverage-report/
+coverage-results/
+
+# IDEs
+.cursor/docs/

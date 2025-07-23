@@ -1,5 +1,5 @@
 @using Humanizer
-@using CaddyManager.Models.Caddy
+@using CaddyManager.Contracts.Models.Caddy
 @attribute [StreamRendering]
 
 <MudListItem T="CaddyConfigurationInfo" Text="@ConfigurationInfo.FileName" Value="@ConfigurationInfo" OnClick="Edit" OnClickPreventDefault="true">

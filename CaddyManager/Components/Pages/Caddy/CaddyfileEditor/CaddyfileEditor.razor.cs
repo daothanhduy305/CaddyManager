@@ -1,6 +1,7 @@
-using BlazorMonaco.Editor;
 using CaddyManager.Contracts.Caddy;
-using CaddyManager.Models.Caddy;
+using BlazorMonaco.Editor;
+using CaddyManager.Services.Caddy;
+using CaddyManager.Contracts.Models.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using CaddyManager.Contracts.Docker;

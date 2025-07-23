@@ -11,7 +11,7 @@ builder.Services
     .AddInteractiveServerComponents();
 
 // Auto register all the Services, Repositories that we have had within the code base
-builder.Services.RegisterAssemblyPublicNonGenericClasses()
+builder.Services.RegisterAssemblyPublicNonGenericClasses(System.Reflection.Assembly.GetAssembly(typeof(CaddyManager.Services.Caddy.CaddyService)))
     .Where(t => t.Name.EndsWith("Service"))
     .AsPublicImplementedInterfaces();
 

@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+# Development Workflow and Task Management
+
+## Procedure and Approach
+- You should do your tasks effectively and efficiently. Normally, you'd start your task by analyzing and planning and designing, using a md file with the suffix `_plan` created under the `.cursor/docs/` folder to keep track of the progress. You'd keep finishing your task by tracking the progress with that `_plan` file until your task is completely finished.
+- When the task is complex, you should break it into smaller tasks and do the subtasks one by one until all are done. The subtasks' progress can be kept track in the master `_plan` file.
+- Always remember to run tests, and check the coverage and add new tests whenever you add new implementation logic, services or when you modify the existing implementations and services
+- What you do, you'd have to do to the end, when the result matches the expectations. You must not stop in the middle
+
+## Testing Requirements
+- Always run tests after changing code that affects tests and after changing tests themselves
+- Check the launch.json file for secrets before committing. If secrets are found, replace them with 'SECRET', commit the changes, and restore the original secret values afterwards
+- Build warnings should also be taken care of.
+
+## Documentations
+- Knowledge base and documentations are and will be generated under the folder docs/
+- Only generate the documentations under that /docs folder on-demand, when it's requested by me
+- Tests code should have summary to explain the test cases
+- API and method should have relevant summary
+- Complex logic should have comments to explain better# Development Workflow and Task Management

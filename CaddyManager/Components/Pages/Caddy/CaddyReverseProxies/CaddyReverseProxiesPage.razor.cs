@@ -1,8 +1,9 @@
+using CaddyManager.Contracts.Caddy;
 using System.Globalization;
 using CaddyManager.Components.Pages.Generic;
-using CaddyManager.Contracts.Caddy;
+using CaddyManager.Services.Caddy;
 using CaddyManager.Contracts.Docker;
-using CaddyManager.Models.Caddy;
+using CaddyManager.Contracts.Models.Caddy;
 using Humanizer;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;

@@ -1,0 +1,10 @@
+---
+alwaysApply: true
+---
+# Git Configuration and Preferences
+
+## Git Configuration
+- The user prefers that the assistant not add launch.json by default; they will add it only when needed
+
+## Commit and Security
+- Check the launch.json file for secrets before committing. If secrets are found, replace them with 'SECRET', commit the changes, and restore the original secret values afterwards

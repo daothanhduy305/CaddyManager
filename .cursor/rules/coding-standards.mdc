@@ -27,6 +27,10 @@ alwaysApply: true
 - Use Swagger/OpenAPI for API documentation for your backend API services
 - Ensure XML documentation for models and API methods for enhancing Swagger documentation
 
+# Services implementation
+- Arguments of the service methods, when exceeding 2, must be wrapped in a dedicated request record. The request record is created as a model.
+- Result of the service methods must be wrapped in a dedicated result record. The result record is created as a model.
+
 ## Utils
 - For JSON processing and utils, we are using Newtonsoft exclusively
 

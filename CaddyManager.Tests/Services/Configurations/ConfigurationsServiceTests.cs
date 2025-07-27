@@ -2,7 +2,6 @@ using CaddyManager.Contracts.Configurations.Caddy;
 using CaddyManager.Contracts.Configurations.Docker;
 using CaddyManager.Services.Configurations;
 using CaddyManager.Tests.TestUtilities;
-using Microsoft.Extensions.Configuration;
 
 namespace CaddyManager.Tests.Services.Configurations;
 

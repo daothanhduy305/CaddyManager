@@ -1,7 +1,6 @@
 using CaddyManager.Contracts.Caddy;
 using System.Globalization;
 using CaddyManager.Components.Pages.Generic;
-using CaddyManager.Services.Caddy;
 using CaddyManager.Contracts.Docker;
 using CaddyManager.Contracts.Models.Caddy;
 using Humanizer;

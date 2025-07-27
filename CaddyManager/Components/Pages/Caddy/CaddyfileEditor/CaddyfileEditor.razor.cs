@@ -1,6 +1,5 @@
 using CaddyManager.Contracts.Caddy;
 using BlazorMonaco.Editor;
-using CaddyManager.Services.Caddy;
 using CaddyManager.Contracts.Models.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;

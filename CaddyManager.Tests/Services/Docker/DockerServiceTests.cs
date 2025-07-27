@@ -1,9 +1,6 @@
 using CaddyManager.Contracts.Configurations.Docker;
 using CaddyManager.Contracts.Configurations;
 using CaddyManager.Services.Docker;
-using CaddyManager.Tests.TestUtilities;
-using Docker.DotNet;
-using Docker.DotNet.Models;
 
 namespace CaddyManager.Tests.Services.Docker;
 

@@ -1,9 +1,6 @@
-using CaddyManager.Contracts.Models.Caddy;
-using CaddyManager.Contracts.Configurations.Caddy;
-
 namespace CaddyManager.Contracts.Caddy;
+
 using CaddyManager.Contracts.Models.Caddy;
-using CaddyManager.Contracts.Configurations.Caddy;
 
 /// <summary>
 /// Contracts for Caddy Service to help monitor the available Caddy configurations

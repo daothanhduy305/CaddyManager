@@ -1,6 +1,3 @@
-using CaddyManager.Contracts.Configurations.Caddy;
-using CaddyManager.Contracts.Configurations.Docker;
-
 namespace CaddyManager.Contracts.Configurations;
 
 /// <summary>

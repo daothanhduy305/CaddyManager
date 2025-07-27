@@ -1,5 +1,4 @@
 using CaddyManager.Contracts.Configurations.Caddy;
-using CaddyManager.Contracts.Caddy;
 using CaddyManager.Contracts.Configurations;
 using CaddyManager.Contracts.Models.Caddy;
 using CaddyManager.Services.Caddy;

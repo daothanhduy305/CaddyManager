@@ -1,7 +1,5 @@
 using NetCore.AutoRegisterDi;
 using Microsoft.Extensions.Configuration;
-using CaddyManager.Contracts.Configurations.Caddy;
-using CaddyManager.Contracts.Configurations.Docker;
 using CaddyManager.Contracts.Configurations;
 
 namespace CaddyManager.Services.Configurations;

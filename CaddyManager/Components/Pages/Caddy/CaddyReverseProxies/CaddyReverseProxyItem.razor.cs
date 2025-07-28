@@ -1,3 +1,4 @@
+using CaddyManager.Contracts.Caddy;
 using CaddyManager.Contracts.Models.Caddy;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -29,6 +30,11 @@ public partial class CaddyReverseProxyItem : ComponentBase
     private IDialogService DialogService { get; set; } = null!;
 
     /// <summary>
+    /// Caddy service for ops on the Caddy configuration
+    /// </summary>
+    [Inject] private ICaddyService CaddyService { get; set; } = null!;
+
+    /// <summary>
     /// Show the Caddy file editor dialog
     /// </summary>
     /// <returns></returns>
@@ -45,6 +51,9 @@ public partial class CaddyReverseProxyItem : ComponentBase
         });
 
         var result = await dialog.Result;
+
+        ConfigurationInfo = CaddyService.GetCaddyConfigurationInfo(ConfigurationInfo.FileName);
+        await InvokeAsync(StateHasChanged);
         
         if (result is { Data: bool, Canceled: false } && (bool)result.Data)
         {

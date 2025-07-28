@@ -30,6 +30,11 @@ public class CaddyConfigurationInfo
     /// </summary>
     public List<int> AggregatedReverseProxyPorts { get; set; } = [];
 
+    /// <summary>
+    /// Tags extracted from the configuration content using the format: # Tags: [tag1;tag2;tag3]
+    /// </summary>
+    public List<string> Tags { get; set; } = [];
+
     public override bool Equals(object? obj)
     {
         if (obj is not CaddyConfigurationInfo other)

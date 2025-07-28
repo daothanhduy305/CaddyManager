@@ -665,4 +665,289 @@ api.test {
     }
 
     #endregion
+
+    #region GetTagsFromCaddyfileContent Tests
+
+    /// <summary>
+    /// Tests that the parsing service correctly extracts tags from a basic tags comment line.
+    /// Setup: Provides a Caddyfile content string with a simple tags comment in the correct format.
+    /// Expectation: The service should return a list containing all tags separated by semicolons, enabling proper tag-based organization of Caddy configurations.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithBasicTags_ReturnsCorrectTags()
+    {
+        // Arrange
+        var caddyfileContent = @"
+# Tags: web;production;ssl
+example.com {
+    reverse_proxy localhost:8080
+}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(3);
+        result.Should().Contain("web");
+        result.Should().Contain("production");
+        result.Should().Contain("ssl");
+    }
+
+    /// <summary>
+    /// Tests that the parsing service correctly extracts tags with whitespace variations.
+    /// Setup: Provides a Caddyfile content string with tags containing various whitespace patterns.
+    /// Expectation: The service should trim whitespace and return clean tag names, ensuring consistent tag handling regardless of formatting.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithWhitespaceVariations_ReturnsTrimmedTags()
+    {
+        // Arrange
+        var caddyfileContent = @"
+# Tags:   web ; production ;  ssl 
+example.com {
+    reverse_proxy localhost:8080
+}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(3);
+        result.Should().Contain("web");
+        result.Should().Contain("production");
+        result.Should().Contain("ssl");
+    }
+
+    /// <summary>
+    /// Tests that the parsing service correctly extracts a single tag.
+    /// Setup: Provides a Caddyfile content string with only one tag in the tags comment.
+    /// Expectation: The service should return a list containing exactly one tag, ensuring proper handling of minimal tag configurations.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithSingleTag_ReturnsOneTag()
+    {
+        // Arrange
+        var caddyfileContent = @"
+# Tags: production
+example.com {
+    reverse_proxy localhost:8080
+}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(1);
+        result.Should().Contain("production");
+    }
+
+    /// <summary>
+    /// Tests that the parsing service handles case-insensitive tags comment detection.
+    /// Setup: Provides a Caddyfile content string with various case combinations for the tags comment.
+    /// Expectation: The service should detect tags comments regardless of case, ensuring robust tag parsing across different writing styles.
+    /// </summary>
+    [Theory]
+    [InlineData("# Tags: web;production")]
+    [InlineData("# tags: web;production")]
+    [InlineData("# TAGS: web;production")]
+    [InlineData("#Tags: web;production")]
+    [InlineData("#  Tags:  web;production")]
+    public void GetTagsFromCaddyfileContent_WithCaseVariations_ReturnsCorrectTags(string tagsLine)
+    {
+        // Arrange
+        var caddyfileContent = $@"
+{tagsLine}
+example.com {{
+    reverse_proxy localhost:8080
+}}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(2);
+        result.Should().Contain("web");
+        result.Should().Contain("production");
+    }
+
+    /// <summary>
+    /// Tests that the parsing service handles empty tags list gracefully.
+    /// Setup: Provides a Caddyfile content string with an empty tags comment.
+    /// Expectation: The service should return an empty list when tags are empty, ensuring proper handling of configurations without tags.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithEmptyTagsList_ReturnsEmptyList()
+    {
+        // Arrange
+        var caddyfileContent = @"
+# Tags: 
+example.com {
+    reverse_proxy localhost:8080
+}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    /// <summary>
+    /// Tests that the parsing service handles duplicate tags by removing them.
+    /// Setup: Provides a Caddyfile content string with duplicate tags in the tags comment.
+    /// Expectation: The service should return a list with unique tags only, ensuring clean tag lists without duplicates.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithDuplicateTags_ReturnsUniqueTags()
+    {
+        // Arrange
+        var caddyfileContent = @"
+# Tags: web;production;web;ssl;production
+example.com {
+    reverse_proxy localhost:8080
+}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(3);
+        result.Should().Contain("web");
+        result.Should().Contain("production");
+        result.Should().Contain("ssl");
+    }
+
+    /// <summary>
+    /// Tests that the parsing service handles content without tags comment gracefully.
+    /// Setup: Provides a Caddyfile content string without any tags comment.
+    /// Expectation: The service should return an empty list when no tags comment is found, ensuring proper handling of non-tagged configurations.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithoutTagsComment_ReturnsEmptyList()
+    {
+        // Arrange
+        var caddyfileContent = @"
+example.com {
+    reverse_proxy localhost:8080
+}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    /// <summary>
+    /// Tests that the parsing service handles malformed tags comment gracefully.
+    /// Setup: Provides a Caddyfile content string with malformed tags comment that doesn't match the expected format.
+    /// Expectation: The service should return an empty list when tags comment is malformed, ensuring robust error handling for invalid tag formats.
+    /// </summary>
+    [Theory]
+    [InlineData("# Tags web;production")] // Missing colon
+    [InlineData("Tags: web;production")] // Missing hash
+    public void GetTagsFromCaddyfileContent_WithMalformedTagsComment_ReturnsEmptyList(string tagsLine)
+    {
+        // Arrange
+        var caddyfileContent = $@"
+{tagsLine}
+example.com {{
+    reverse_proxy localhost:8080
+}}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    /// <summary>
+    /// Tests that the parsing service handles empty string content gracefully.
+    /// Setup: Provides an empty string as Caddyfile content.
+    /// Expectation: The service should return an empty list when content is empty, ensuring robust error handling for missing configurations.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithEmptyContent_ReturnsEmptyList()
+    {
+        // Arrange
+        var caddyfileContent = string.Empty;
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().BeEmpty();
+    }
+
+    /// <summary>
+    /// Tests that the parsing service handles complex tag names with special characters.
+    /// Setup: Provides a Caddyfile content string with tags containing special characters and complex names.
+    /// Expectation: The service should correctly extract tags with special characters, ensuring support for comprehensive tag naming schemes.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithComplexTagNames_ReturnsCorrectTags()
+    {
+        // Arrange
+        var caddyfileContent = @"
+# Tags: web-frontend;backend_api;v2.0;production-env;team:alpha
+example.com {
+    reverse_proxy localhost:8080
+}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(5);
+        result.Should().Contain("web-frontend");
+        result.Should().Contain("backend_api");
+        result.Should().Contain("v2.0");
+        result.Should().Contain("production-env");
+        result.Should().Contain("team:alpha");
+    }
+
+    /// <summary>
+    /// Tests that the parsing service only extracts the first tags comment when multiple are present.
+    /// Setup: Provides a Caddyfile content string with multiple tags comments.
+    /// Expectation: The service should only extract tags from the first valid tags comment, ensuring consistent behavior when multiple tag definitions exist.
+    /// </summary>
+    [Fact]
+    public void GetTagsFromCaddyfileContent_WithMultipleTagsComments_ReturnsFirstMatch()
+    {
+        // Arrange
+        var caddyfileContent = @"
+# Tags: web;production
+example.com {
+    reverse_proxy localhost:8080
+}
+
+# Tags: api;development
+api.example.com {
+    reverse_proxy localhost:8081
+}";
+
+        // Act
+        var result = _service.GetTagsFromCaddyfileContent(caddyfileContent);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().HaveCount(2);
+        result.Should().Contain("web");
+        result.Should().Contain("production");
+        result.Should().NotContain("api");
+        result.Should().NotContain("development");
+    }
+
+    #endregion
 }

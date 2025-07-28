@@ -594,6 +594,7 @@ public class CaddyServiceTests : IDisposable
         var expectedHostnames = new List<string> { "example.com" };
         var expectedTarget = "localhost";
         var expectedPorts = new List<int> { 8080 };
+        var expectedTags = new List<string>();
 
         _mockParsingService
             .Setup(x => x.GetHostnamesFromCaddyfileContent(testContent))
@@ -604,6 +605,9 @@ public class CaddyServiceTests : IDisposable
         _mockParsingService
             .Setup(x => x.GetReverseProxyPortsFromCaddyfileContent(testContent))
             .Returns(expectedPorts);
+        _mockParsingService
+            .Setup(x => x.GetTagsFromCaddyfileContent(testContent))
+            .Returns(expectedTags);
 
         // Act
         var result = _service.GetCaddyConfigurationInfo("test");
@@ -613,6 +617,57 @@ public class CaddyServiceTests : IDisposable
         result.Hostnames.Should().BeEquivalentTo(expectedHostnames);
         result.ReverseProxyHostname.Should().Be(expectedTarget);
         result.ReverseProxyPorts.Should().BeEquivalentTo(expectedPorts);
+        result.Tags.Should().BeEquivalentTo(expectedTags);
+    }
+
+    /// <summary>
+    /// Tests that the Caddy service correctly populates the Tags property when configuration content contains tags.
+    /// Setup: Creates a configuration file with tags comment and mocks the parsing service to return expected tags.
+    /// Expectation: The service should correctly populate the Tags property using the parsing service, ensuring tag information is available for configuration management.
+    /// </summary>
+    [Fact]
+    public void GetCaddyConfigurationInfo_WithTags_PopulatesTagsCorrectly()
+    {
+        // Arrange
+        var testContent = @"
+# Tags: [web;production;ssl]
+example.com {
+    reverse_proxy localhost:8080
+}";
+        var filePath = Path.Combine(_tempConfigDir, "test-with-tags.caddy");
+        File.WriteAllText(filePath, testContent);
+
+        var expectedHostnames = new List<string> { "example.com" };
+        var expectedTarget = "localhost";
+        var expectedPorts = new List<int> { 8080 };
+        var expectedTags = new List<string> { "web", "production", "ssl" };
+
+        _mockParsingService
+            .Setup(x => x.GetHostnamesFromCaddyfileContent(testContent))
+            .Returns(expectedHostnames);
+        _mockParsingService
+            .Setup(x => x.GetReverseProxyTargetFromCaddyfileContent(testContent))
+            .Returns(expectedTarget);
+        _mockParsingService
+            .Setup(x => x.GetReverseProxyPortsFromCaddyfileContent(testContent))
+            .Returns(expectedPorts);
+        _mockParsingService
+            .Setup(x => x.GetTagsFromCaddyfileContent(testContent))
+            .Returns(expectedTags);
+
+        // Act
+        var result = _service.GetCaddyConfigurationInfo("test-with-tags");
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Hostnames.Should().BeEquivalentTo(expectedHostnames);
+        result.ReverseProxyHostname.Should().Be(expectedTarget);
+        result.ReverseProxyPorts.Should().BeEquivalentTo(expectedPorts);
+        result.Tags.Should().BeEquivalentTo(expectedTags);
+        result.Tags.Should().HaveCount(3);
+        result.Tags.Should().Contain("web");
+        result.Tags.Should().Contain("production");
+        result.Tags.Should().Contain("ssl");
     }
 
     /// <summary>

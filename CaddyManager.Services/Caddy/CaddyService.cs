@@ -146,7 +146,11 @@ public class CaddyService(
     /// <inheritdoc />
     public CaddyConfigurationInfo GetCaddyConfigurationInfo(string configurationName)
     {
-        var result = new CaddyConfigurationInfo();
+        var result = new CaddyConfigurationInfo
+        {
+            FileName = configurationName
+        };
+        
         var content = GetCaddyConfigurationContent(configurationName);
         if (string.IsNullOrWhiteSpace(content))
         {
@@ -156,6 +160,7 @@ public class CaddyService(
         result.Hostnames = parsingService.GetHostnamesFromCaddyfileContent(content);
         result.ReverseProxyHostname = parsingService.GetReverseProxyTargetFromCaddyfileContent(content);
         result.ReverseProxyPorts  = parsingService.GetReverseProxyPortsFromCaddyfileContent(content);
+        result.Tags = parsingService.GetTagsFromCaddyfileContent(content);
 
         return result;
     }

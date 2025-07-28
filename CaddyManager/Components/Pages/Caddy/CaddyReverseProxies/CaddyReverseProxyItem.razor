@@ -7,6 +7,21 @@
         <MudIcon Icon="@Icons.Custom.FileFormats.FileCode"></MudIcon>
         <MudText>@ConfigurationInfo.FileName</MudText>
         <MudSpacer/>
+        @if (ConfigurationInfo.Tags.Count > 0)
+        {
+            <MudTooltip Delay="0" Placement="Placement.Left">
+                <ChildContent>
+                    <MudChip T="string" Variant="Variant.Outlined" Style="min-width: 80px;"
+                             Color="Color.Tertiary">@("tag".ToQuantity(ConfigurationInfo.Tags.Count))</MudChip>
+                </ChildContent>
+                <TooltipContent>
+                    @foreach (var tag in ConfigurationInfo.Tags)
+                    {
+                        <MudText Align="Align.Start">⏵ @tag</MudText>
+                    }
+                </TooltipContent>
+            </MudTooltip>
+        }
         <MudTooltip Delay="0" Placement="Placement.Left">
             <ChildContent>
                 <MudChip T="string" Variant="Variant.Outlined">@ConfigurationInfo.ReverseProxyHostname</MudChip>

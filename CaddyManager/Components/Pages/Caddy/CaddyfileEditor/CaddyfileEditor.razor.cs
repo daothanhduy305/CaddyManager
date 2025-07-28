@@ -95,7 +95,7 @@ public partial class CaddyfileEditor : ComponentBase
         else
         {
             Snackbar.Add(response.Message, Severity.Error);
-            MudDialog.Close(DialogResult.Ok(false)); // Indicate failed save
+            // MudDialog.Close(DialogResult.Ok(false)); // Indicate failed save
         }
     }
 
@@ -129,7 +129,7 @@ public partial class CaddyfileEditor : ComponentBase
         {
             Snackbar.Add(submitResponse.Message, Severity.Error);
             // Indicate failed save, no restart needed
-            MudDialog.Close(DialogResult.Ok(false));
+            // MudDialog.Close(DialogResult.Ok(false));
         }
     }
 
@@ -139,9 +139,7 @@ public partial class CaddyfileEditor : ComponentBase
     private async Task Duplicate()
     {
         var content = await _codeEditor.GetValue();
-
-        await OnDuplicate.InvokeAsync(content);
-
         MudDialog.Close(DialogResult.Ok(false));
+        await OnDuplicate.InvokeAsync(content);
     }
 }

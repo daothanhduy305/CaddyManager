@@ -35,4 +35,11 @@ public interface ICaddyConfigurationParsingService
     /// <param name="caddyfileContent"></param>
     /// <returns></returns>
     List<int> GetReverseProxyPortsFromCaddyfileContent(string caddyfileContent);
+
+    /// <summary>
+    /// Extracts tags from a Caddyfile content using the format: # Tags: [tag1;tag2;tag3]
+    /// </summary>
+    /// <param name="caddyfileContent"></param>
+    /// <returns></returns>
+    List<string> GetTagsFromCaddyfileContent(string caddyfileContent);
 }

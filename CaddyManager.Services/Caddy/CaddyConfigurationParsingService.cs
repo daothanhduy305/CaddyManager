@@ -39,7 +39,7 @@ public partial class CaddyConfigurationParsingService: ICaddyConfigurationParsin
             hostnames.AddRange(splitHostnames);
         }
         // Remove duplicates and return the list
-        return hostnames.Distinct().ToList();
+        return [.. hostnames.Distinct()];
     }
 
     /// <inheritdoc />
@@ -80,6 +80,39 @@ public partial class CaddyConfigurationParsingService: ICaddyConfigurationParsin
             }
         }
 
-        return results.Distinct().ToList();
+        return [.. results.Distinct()];
+    }
+
+    /// <inheritdoc />
+    public List<string> GetTagsFromCaddyfileContent(string caddyfileContent)
+    {
+        // Split the content into lines and look for the tags line
+        var lines = caddyfileContent.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        
+        foreach (var line in lines)
+        {
+            var trimmedLine = line.Trim();
+            if (trimmedLine.StartsWith("#"))
+            {
+                // Remove the # and any leading whitespace, then check if it starts with "tags:"
+                var afterHash = trimmedLine.Substring(1).TrimStart();
+                if (afterHash.StartsWith("tags:", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Extract the part after "tags:"
+                    var tagsString = afterHash.Substring(5).Trim(); // 5 = length of "tags:"
+                    if (string.IsNullOrWhiteSpace(tagsString))
+                        return [];
+
+                    // Split by semicolon and clean up each tag
+                    return [.. tagsString.Split(';')
+                        .Select(tag => tag.Trim())
+                        .Where(tag => !string.IsNullOrWhiteSpace(tag))
+                        .Distinct()];
+                }
+            }
+        }
+
+        // No tags line found
+        return [];
     }
 }

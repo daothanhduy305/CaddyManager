@@ -27,6 +27,8 @@ public class CaddyConfigurationInfoTests
         info.FileName.Should().Be(string.Empty);
         info.AggregatedReverseProxyPorts.Should().NotBeNull();
         info.AggregatedReverseProxyPorts.Should().BeEmpty();
+        info.Tags.Should().NotBeNull();
+        info.Tags.Should().BeEmpty();
     }
 
     /// <summary>
@@ -43,6 +45,7 @@ public class CaddyConfigurationInfoTests
         var reverseProxyPorts = new List<int> { 8080, 9090 };
         var fileName = "test-config";
         var aggregatedPorts = new List<int> { 8080, 9090, 3000 };
+        var tags = new List<string> { "web", "production", "ssl" };
 
         // Act
         var info = new CaddyConfigurationInfo
@@ -51,7 +54,8 @@ public class CaddyConfigurationInfoTests
             ReverseProxyHostname = reverseProxyHostname,
             ReverseProxyPorts = reverseProxyPorts,
             FileName = fileName,
-            AggregatedReverseProxyPorts = aggregatedPorts
+            AggregatedReverseProxyPorts = aggregatedPorts,
+            Tags = tags
         };
 
         // Assert
@@ -60,6 +64,7 @@ public class CaddyConfigurationInfoTests
         info.ReverseProxyPorts.Should().BeEquivalentTo(reverseProxyPorts);
         info.FileName.Should().Be(fileName);
         info.AggregatedReverseProxyPorts.Should().BeEquivalentTo(aggregatedPorts);
+        info.Tags.Should().BeEquivalentTo(tags);
     }
 
     /// <summary>

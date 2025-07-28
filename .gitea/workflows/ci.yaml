@@ -41,13 +41,18 @@ jobs:
         run: |
           sed -i "s/public static readonly string CommitHash = \"\[DEVELOPMENT\]\";/public static readonly string CommitHash = \"${{ steps.metadata.outputs.COMMIT_HASH }}\";/" CaddyManager/Configurations/Application/ApplicationInfo.cs
       - name: Publish container
-        run: |
-          dotnet publish \
-          --configuration Release --os linux --arch x64 \
-          /t:PublishContainer -p ContainerRegistry=${{ vars.DOCKER_GITEA_DOMAIN }} \
-          -p ContainerRepository=ebolo/caddy-manager -p:ContainerImageTags='"${{ steps.metadata.outputs.APP_VERSION }};latest"'
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: |
+            dotnet publish \
+            --configuration Release --os linux --arch x64 \
+            /t:PublishContainer -p ContainerRegistry=${{ vars.DOCKER_GITEA_DOMAIN }} \
+            -p ContainerRepository=ebolo/caddy-manager -p:ContainerImageTags='"${{ steps.metadata.outputs.APP_VERSION }};latest"'
       - name: Deploy to Komodo
         uses: fjogeleit/http-request-action@v1
+        if: success()
         with:
           url: '${{ vars.WINDMILL_DOMAIN }}/komodo/pull-stack/${{ secrets.KOMODO_STACK_ID }}'
           method: 'PUT'

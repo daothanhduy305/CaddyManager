@@ -91,7 +91,7 @@ public partial class CaddyReverseProxiesPage : ComponentBase
     {
         var notSearching = string.IsNullOrWhiteSpace(_debouncedText);
         var configurations = CaddyService.GetExistingCaddyConfigurations()
-            .Where(conf => notSearching || conf.FileName.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase) || conf.ReverseProxyHostname.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase))
+            .Where(conf => notSearching || conf.FileName.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase) || conf.ReverseProxyHostname.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase) || conf.Tags.Any(tag => tag.Contains(_debouncedText, StringComparison.OrdinalIgnoreCase)))
             .OrderBy(conf => conf.FileName)
             .ToList();
 
